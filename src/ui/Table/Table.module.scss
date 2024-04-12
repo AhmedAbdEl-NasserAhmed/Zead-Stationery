@@ -1,0 +1,14 @@
+table {
+  width: 100%;
+  background-color: var(--color-purple-20);
+  color: var(--color-white);
+}
+
+th {
+  padding: 1.6rem;
+  font-size: 1.3rem;
+  text-align: center;
+  text-transform: capitalize;
+  border: 2px solid var(--color-purple-10);
+  height: 10vh;
+}

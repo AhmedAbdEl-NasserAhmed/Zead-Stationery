@@ -1,0 +1,13 @@
+.delete-confirmation {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2.5rem;
+  font-size: 2rem;
+  padding: 1.5rem;
+  font-weight: bold;
+  width: min(60rem, 30vw);
+  background-color: var(--color-white);
+  border-radius: 5px;
+}

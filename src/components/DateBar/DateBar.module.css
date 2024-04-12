@@ -1,0 +1,21 @@
+.dateBar-container {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 1.5rem;
+  font-size: 1.5rem;
+  background-color: var(--color-purple-10);
+  color: var(--color-white);
+}
+
+.calender-container {
+  position: absolute;
+  max-width: 300px;
+  margin: 0 auto;
+  margin-top: 20px;
+  padding: 10px;
+  border-radius: 3px;
+  right: 0;
+  top: 35px;
+}/*# sourceMappingURL=DateBar.module.css.map */

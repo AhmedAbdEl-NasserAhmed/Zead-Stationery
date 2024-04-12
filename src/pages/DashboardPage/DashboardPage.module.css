@@ -1,0 +1,67 @@
+.store {
+  display: grid;
+  grid-template-columns: 22rem 1fr;
+  height: 100vh;
+}
+.store__links {
+  display: grid;
+  grid-template-rows: repeat(3, max-content);
+  gap: 5rem;
+  background-color: var(--color-purple-20);
+}
+.store__links-heading {
+  padding: 2rem;
+  font-size: 1.8rem;
+  text-align: center;
+  color: var(--color-white);
+  background-color: var(--color-purple-10);
+  font-weight: bold;
+}
+.store__links-list {
+  font-size: 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  color: var(--color-white);
+}
+.store__links-list a, .store__links-list a:visited, .store__links-list a:link {
+  display: flex;
+  align-items: center;
+  gap: 0.85em;
+  padding: 1.2rem;
+  transition: 0.3s all;
+}
+.store__links-list a:hover, .store__links-list a.active:visited, .store__links-list a.active:link {
+  background-color: var(--color-purple-10);
+}
+.store__links-list a svg {
+  width: 1.6rem;
+  height: 1.6rem;
+  color: var(--color-white);
+  transition: all 0.3s;
+}
+.store__links-list a.active svg, .store__links-list a.active:link svg, .store__links-list a.active:visited svg {
+  color: var(--color-white);
+}
+.store__links-back {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 1.5rem 1.2rem;
+  font-size: 1.2rem;
+  color: var(--color-white);
+  align-self: start;
+}
+.store__links-back svg {
+  width: 1.6rem;
+  height: 1.6rem;
+  color: var(--color-white);
+  transition: all 0.3s;
+}
+.store__location {
+  display: flex;
+  justify-content: space-between;
+  padding: 1.5rem 2rem;
+  background-color: var(--color-white);
+  font-size: 1.6rem;
+}/*# sourceMappingURL=DashboardPage.module.css.map */

@@ -1,0 +1,10 @@
+.purchase-page {
+  position: relative;
+  padding: 2rem;
+  border-radius: 3px;
+  background-color: var(--color-white);
+  margin-top: 5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 3.5rem;
+}/*# sourceMappingURL=PurchasesPage.module.css.map */

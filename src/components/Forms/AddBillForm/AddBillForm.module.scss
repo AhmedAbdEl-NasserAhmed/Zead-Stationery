@@ -1,0 +1,54 @@
+.bill-form {
+  // height: 60vh;
+  // overflow-y: scroll;
+  width: 90vw;
+  border-radius: 4px;
+  background-color: var(--color-white);
+  padding: 1.5rem;
+
+  &__container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  &__input-row {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+
+    &--delete,
+    &--verify {
+      align-self: center;
+      width: 2rem;
+      height: 2rem;
+      display: flex;
+      font-size: 1.5rem;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50px;
+      background-color: rgb(255, 4, 4);
+      padding: 0.3rem;
+      color: var(--color-white);
+    }
+
+    &--delete {
+      background-color: rgb(255, 4, 4);
+      cursor: pointer;
+    }
+    &--verify {
+      background-color: var(--color-green-10);
+    }
+  }
+
+  &__buttons {
+    display: flex;
+    bottom: 0;
+    gap: 2rem;
+    justify-content: end;
+    padding-bottom: 1.5rem;
+    margin-top: 5rem;
+    margin-top: auto;
+  }
+}

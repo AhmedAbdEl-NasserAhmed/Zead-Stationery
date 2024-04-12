@@ -1,0 +1,40 @@
+.invoice-container {
+  display: grid;
+  grid-template-rows: 5rem 1fr 5rem;
+  background-color: var(--color-purple-20);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.invoice-container__details {
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.4rem;
+  color: var(--color-white);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  background-color: var(--color-purple-10);
+}
+.invoice-container__product-details {
+  display: grid;
+  grid-template-rows: 4rem;
+  grid-template-columns: repeat(auto-fill, minmax(30rem, 1fr));
+  align-items: center;
+  justify-items: center;
+  -moz-column-gap: 1.5rem;
+       column-gap: 1.5rem;
+  row-gap: 2rem;
+  padding: 1.5rem;
+  color: var(--color-white);
+  font-size: 1.3rem;
+}
+.invoice-container__total {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  padding: 1.5rem;
+  color: var(--color-white);
+  background-color: var(--color-purple-10);
+}/*# sourceMappingURL=PurchasesInvoice.module.css.map */

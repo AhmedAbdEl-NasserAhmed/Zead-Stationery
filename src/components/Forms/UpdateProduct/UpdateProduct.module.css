@@ -1,0 +1,27 @@
+.update-form {
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  gap: 4rem;
+  width: 85vw;
+  background-color: var(--color-white);
+  border-radius: 5px;
+}
+.update-form__input-row {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+.update-form__table {
+  width: 100%;
+  background-color: var(--color-purple-20);
+  color: var(--color-white);
+}
+.update-form__table th {
+  padding: 1rem;
+  font-size: 1.3rem;
+  text-align: center;
+  text-transform: capitalize;
+  border: 2px solid var(--color-purple-10);
+  height: 1vh;
+}/*# sourceMappingURL=UpdateProduct.module.css.map */

@@ -1,0 +1,23 @@
+.updatedCapitals {
+  display: flex;
+  gap: 2.5rem;
+  flex-direction: column;
+
+  &__heading {
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: var(--color-purple-20);
+  }
+
+  &__item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: var(--color-purple-10);
+    color: var(--color-white);
+    font-size: 1.5rem;
+    font-weight: 500;
+    border-radius: 5px;
+  }
+}
