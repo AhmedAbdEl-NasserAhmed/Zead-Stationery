@@ -1,9 +1,9 @@
-import EditGood from "../../components/EditGood/EditGood";
 import { goodsTableContent } from "../../constatnts/goodsTableContent";
 import { useGetGoodsDataQuery } from "../../services/goodsApi";
 import Menus from "../../ui/Menus/Menus";
 import Spinner from "../../ui/Spinner/Spinner";
 import Table from "../../ui/Table/Table";
+import EditGood from "./EditGood/EditGood";
 import styles from "./goodsPage.module.scss";
 
 function GoodsPage() {

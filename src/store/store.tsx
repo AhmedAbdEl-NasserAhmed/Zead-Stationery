@@ -7,6 +7,7 @@ import { purchasesApi } from "../services/purchasesApi";
 import { capitalApi } from "../services/capitalApi";
 import currentCapitalSlice from "./slices/currentCapitalSlice";
 import { capitalHistoryApi } from "../services/capitalHistory";
+import { billsApi } from "../services/billsAPi";
 
 export const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ export const store = configureStore({
     [purchasesApi.reducerPath]: purchasesApi.reducer,
     [capitalApi.reducerPath]: capitalApi.reducer,
     [capitalHistoryApi.reducerPath]: capitalHistoryApi.reducer,
+    [billsApi.reducerPath]: billsApi.reducer,
   },
 
   middleware: (getDefaultMiddleware) =>
@@ -23,7 +25,8 @@ export const store = configureStore({
       goodsApi.middleware,
       purchasesApi.middleware,
       capitalApi.middleware,
-      capitalHistoryApi.middleware
+      capitalHistoryApi.middleware,
+      billsApi.middleware
     ),
 });
 

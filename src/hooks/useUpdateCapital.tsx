@@ -8,8 +8,6 @@ interface Props {
 async function useUpdateCapital({ data }: Props) {
   const updatedCapital = doc(db, "capital", data.id);
 
-  console.log("data", data);
-
   try {
     await updateDoc(updatedCapital, {
       ...data,

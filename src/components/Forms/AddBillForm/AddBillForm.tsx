@@ -14,9 +14,11 @@ import { formatFormData } from "../../../helpers/formatFormData";
 import SearchAddBillProductsInput from "../../SearchAddBillProductsInput/SearchAddBillProductsInput";
 import { useDispatch } from "react-redux";
 import { assingAmount } from "../../../store/slices/currentCapitalSlice";
+import { useUpdateCapitalDataMutation } from "../../../services/capitalApi";
+import { useUseUpdateExistedProductMutation } from "../../../services/goodsApi";
 
 interface Props {
-  setShowModal: () => void;
+  setShowModal?: () => void;
 }
 
 function AddBillForm({ setShowModal }: Props) {
@@ -34,6 +36,10 @@ function AddBillForm({ setShowModal }: Props) {
   });
 
   const dispatch = useDispatch();
+
+  const [updateCapital] = useUpdateCapitalDataMutation();
+
+  const [updateExistedProduct] = useUseUpdateExistedProductMutation();
 
   const formData = watch();
 
@@ -55,9 +61,9 @@ function AddBillForm({ setShowModal }: Props) {
     {
       name: "",
       type: "",
-      singleCount: "",
-      piecesCount: "",
-      singlePrice: "",
+      singleCount: 0,
+      piecesCount: 0,
+      singlePrice: 0,
     }
   );
 
@@ -86,16 +92,24 @@ function AddBillForm({ setShowModal }: Props) {
 
     if (isValid) {
       const totalPrice =
-        +formData?.[currentRowId]?.["product-billSinglePrice"] *
-        +formData?.[currentRowId]?.["product-billQunantity"];
+        +formData?.[currentRowId]?.["singlePrice"] *
+        +formData?.[currentRowId]?.["quantity"];
 
-      setValue(`${currentRowId}.product-billTotalPrice`, totalPrice);
+      setValue(`${currentRowId}.totalPrice`, totalPrice);
 
       const totalQuantity =
-        selectedBillProductQuantity -
-        +formData?.[currentRowId]?.["product-billQunantity"];
+        selectedBillProductQuantity - +formData?.[currentRowId]?.["quantity"];
 
-      setValue(`${currentRowId}.product-billPiecesCount`, totalQuantity);
+      setValue(`${currentRowId}.piecesCount`, totalQuantity);
+
+      // const remainingPiecesCounts=
+
+      const piecesDecrement = Math.floor(
+        +formData?.[currentRowId]?.["quantity"] /
+          +formData?.[currentRowId]?.["singleCount"]
+      );
+
+      setValue(`${currentRowId}.soldPieces`, piecesDecrement);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -104,9 +118,9 @@ function AddBillForm({ setShowModal }: Props) {
     selectedBillProductQuantity,
     setValue,
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    formData?.[currentRowId]?.["product-billSinglePrice"],
+    formData?.[currentRowId]?.["singlePrice"],
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    formData?.[currentRowId]?.["product-billQunantity"],
+    formData?.[currentRowId]?.["quantity"],
   ]);
 
   function addNewRow() {
@@ -142,17 +156,47 @@ function AddBillForm({ setShowModal }: Props) {
     setSelectedBillProductQuantity(0);
   }
 
-  function onSubmit() {
-    console.log("Hello");
+  console.log("FormData", formData);
 
-    // dispatch(assingAmount(currentBalance));
+  function onSubmit() {
+    const serverData = Object.entries(formData).map((item) => {
+      const modiefiedObject = {
+        productId: "",
+      };
+
+      for (const key in item[1]) {
+        const newKey = key.split("-");
+        const referenceKey = newKey[1];
+        if (key.includes("-")) {
+          modiefiedObject[referenceKey] = item[1][key];
+        } else {
+          modiefiedObject[key] = item[1][key];
+        }
+      }
+
+      return modiefiedObject;
+    });
+
+    serverData.forEach((product) => {
+      updateExistedProduct({
+        productsData: product,
+        id: product.productId,
+      });
+    });
+
+    dispatch(assingAmount(currentBalance));
 
     reset();
 
     setShowModal();
-  }
 
-  console.log(" Form Data", formData);
+    updateCapital({
+      data: {
+        id: "1be3a89a-24eb-45c4-a1b5-deaa703bd465",
+        amount: Number(currentBalance),
+      },
+    });
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={styles["bill-form"]}>
@@ -163,11 +207,12 @@ function AddBillForm({ setShowModal }: Props) {
             {currentBalance} EGP
           </h2>
         </div>
-        <div className="flex flex-col gap-10">
+        <div className="flex flex-col gap-[4rem]">
           {inputRows.map((rowId) => {
             return (
               <div className={styles["bill-form__input-row"]} key={rowId}>
                 <SearchAddBillProductsInput
+                  label="Product Name"
                   setSelectedBillProductQuantity={
                     setSelectedBillProductQuantity
                   }
@@ -196,6 +241,7 @@ function AddBillForm({ setShowModal }: Props) {
                 ).map((input) => {
                   return (
                     <Input
+                      label={input.label}
                       onClick={input.onClick}
                       defaultValue={input.defaultValue}
                       key={input.name}
@@ -240,9 +286,9 @@ function AddBillForm({ setShowModal }: Props) {
               setSelectedBillProduct({
                 name: "",
                 type: "",
-                singleCount: "",
-                piecesCount: "",
-                singlePrice: "",
+                singleCount: 0,
+                piecesCount: 0,
+                singlePrice: 0,
               });
             }}
           >

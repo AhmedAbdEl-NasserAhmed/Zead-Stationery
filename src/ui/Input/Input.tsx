@@ -11,11 +11,13 @@ interface InputProps {
   size?: string;
   register: UseFormRegister<FieldValues>;
   errors: object;
+  label?: string;
+  id?: string;
   formData?: object;
   onClick?: () => void;
   rowId?: string;
   disabled?: boolean;
-  defaultValue?: number;
+  defaultValue?: number | string;
   validtionInputs?: {
     required: {
       value: boolean;
@@ -31,6 +33,7 @@ interface InputProps {
 
 function Input({
   size,
+  id,
   type,
   register,
   name,
@@ -41,6 +44,7 @@ function Input({
   formData,
   disabled,
   onClick,
+  label,
 }: InputProps) {
   function inputStyle() {
     let inputStyle = {
@@ -76,6 +80,11 @@ function Input({
 
   return (
     <div className="flex flex-col gap-2 ">
+      {label && (
+        <label className="text-[1.2rem] font-medium" htmlFor={id}>
+          {label}
+        </label>
+      )}
       <input
         onClick={onClick}
         defaultValue={defaultValue}

@@ -6,35 +6,58 @@ export const billFormInputs = function (
 ) {
   return [
     {
-      name: `${rowId}.product-type`,
+      id: `${rowId}.productId`,
+      name: `${rowId}.productId`,
       type: "text",
       disabled: true,
-      placeholder: "Product Type",
+      placeholder: "Product ID ",
+      label: "Product ID",
+    },
+    {
+      id: `${rowId}.soldPieces`,
+      name: `${rowId}.soldPieces`,
+      type: "number",
+      disabled: true,
+      placeholder: "Pieces Count",
+      label: "Sold Pieces",
+    },
+    {
+      id: `${rowId}.singleCount`,
+      name: `${rowId}.singleCount`,
+      type: "number",
+      disabled: true,
+      placeholder: "Single Count",
+      label: "Total Single Counts",
     },
 
     {
-      name: `${rowId}.product-billPiecesCount`,
+      id: `${rowId}.piecesCount`,
+      name: `${rowId}.piecesCount`,
       type: "number",
       defaultValue: 0,
       disabled: true,
       placeholder: "Pieces Count",
+      label: "Total Product items",
     },
     {
-      name: `${rowId}.product-billSinglePrice`,
+      id: `${rowId}.singlePrice`,
+      name: `${rowId}.singlePrice`,
       type: "number",
       disabled: true,
       placeholder: "Single Piece Price",
+      label: "Single item Price",
     },
 
     {
-      name: `${rowId}.product-billQunantity`,
+      id: `${rowId}.quantity`,
+      name: `${rowId}.quantity`,
+      label: "Sold Quantity",
       type: "number",
       disabled: false,
       placeholder: "Quantity",
       onClick() {
         setSelectedBillProductQuantity(
-          +formData[rowId]["product-billPiecesCount"] +
-            +formData[rowId]["product-billQunantity"]
+          +formData[rowId]["piecesCount"] + +formData[rowId]["quantity"]
         );
         setCurrentRowId(rowId);
       },
@@ -49,72 +72,20 @@ export const billFormInputs = function (
         },
         max: {
           value:
-            +formData?.[rowId]?.["product-billPiecesCount"] +
-            +formData?.[rowId]?.["product-billQunantity"],
+            +formData?.[rowId]?.["piecesCount"] +
+            +formData?.[rowId]?.["quantity"],
           message: "This field should  be less than Pieces Quantity ",
         },
       },
     },
     {
-      name: `${rowId}.product-billTotalPrice`,
+      id: `${rowId}.totalPrice`,
+      name: `${rowId}.totalPrice`,
       type: "number",
+      label: "Total Price",
       defaultValue: 0,
       disabled: true,
       placeholder: "Total Price",
     },
-
-    // {
-    //   name: `${rowId}.product-piecesPrice`,
-    //   defaultValue: product.piecesPrice,
-    //   type: "number",
-    //   disabled: false,
-    //   placeholder: "pieces Price",
-    //   validationInputs: {
-    //     required: {
-    //       value: true,
-    //       message: "This field is required",
-    //     },
-    //     min: {
-    //       value: 1,
-    //       message: "Pieces Price should be more than 1",
-    //     },
-    //   },
-    // },
-    // {
-    //   name: `${rowId}.product-singleCount`,
-    //   defaultValue: product.singleCount,
-    //   type: "number",
-    //   disabled: false,
-    //   placeholder: "Single Piece Count",
-    //   validationInputs: {
-    //     required: {
-    //       value: true,
-    //       message: "This field is required",
-    //     },
-    //     min: {
-    //       value: 6,
-    //       message: "Single Piece Count should be more than 6",
-    //     },
-    //   },
-    // },
-
-    // {
-    //   name: `${rowId}.product-pieceProfit`,
-    //   defaultValue: product.pieceProfit,
-    //   type: "number",
-    //   disabled: true,
-    // },
-    // {
-    //   name: `${rowId}.product-singlePieceProfit`,
-    //   defaultValue: product.singlePieceProfit,
-    //   type: "number",
-    //   disabled: true,
-    // },
-    // {
-    //   name: `${rowId}.product-profitPercentage`,
-    //   defaultValue: product.profitPercentage,
-    //   type: "number",
-    //   disabled: true,
-    // },
   ];
 };

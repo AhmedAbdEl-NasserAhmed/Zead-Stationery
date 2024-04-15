@@ -1,10 +1,10 @@
 function calculatingTotalProfits(formData: object) {
   const totalProfits = Object.values(formData)
     .map((profit: number) => {
-      if (!profit["product-billTotalPrice"]) {
-        return (profit["product-billTotalPrice"] = 0);
+      if (!profit["totalPrice"]) {
+        return (profit["totalPrice"] = 0);
       } else {
-        return +profit["product-billTotalPrice"];
+        return +profit["totalPrice"];
       }
     })
     .reduce((acc, profit) => {

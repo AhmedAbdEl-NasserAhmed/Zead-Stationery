@@ -9,27 +9,16 @@ import { useEffect, useRef, useState } from "react";
 import updateProductFormatData from "../../../helpers/updateProductFormatData";
 import { useAppDispatch, useAppSelector } from "../../../interfaces/hooks";
 import { assingAmount } from "../../../store/slices/currentCapitalSlice";
-import { UpdateProductProps } from "../../../hooks/UpdateProductProps";
-import Table from "../../../ui/Table/Table";
 import { updateProductTableContent } from "../../../constatnts/updateProductTableContent";
+import Table from "../../../ui/Table/Table";
+import { useUseUpdateExistedProductMutation } from "../../../services/goodsApi";
 
 interface Props {
   product: ProductObject;
   setShowModal?: () => void;
-  updateProduct: (data: UpdateProductProps) => void;
-  response: {
-    isLoading: boolean;
-  };
 }
 
-function UpdateProduct({
-  product,
-  setShowModal,
-  updateProduct,
-  response,
-}: Props) {
-  const [rowId] = useState<string>(crypto.randomUUID().substring(0, 5));
-
+function UpdateProduct({ product, setShowModal }: Props) {
   const {
     watch,
     handleSubmit,
@@ -41,6 +30,8 @@ function UpdateProduct({
   const formData = watch();
 
   const newFormData = updateProductFormatData(formData);
+
+  const [updateExistedProduct, response] = useUseUpdateExistedProductMutation();
 
   const { amount } = useAppSelector((state) => state.currentCapital);
 
@@ -75,21 +66,31 @@ function UpdateProduct({
 
   function onSubmit() {
     if (currentBalance < 0) return;
-    updateProduct({
-      data: {
-        piecesCount: newFormData["product-piecesCount"],
-        piecesPrice: newFormData["product-piecesPrice"],
-        singleCount: newFormData["product-singleCount"],
-        singlePrice: newFormData["product-singlePrice"],
-        pieceProfit: newFormData["product-pieceProfit"],
-        singlePieceProfit: newFormData["product-singlePieceProfit"],
-        profitPercentage: newFormData["product-profitPercentage"],
-        totalPiecesCount:
-          +newFormData["product-piecesCount"] *
-          +newFormData["product-singleCount"],
-      },
-      product,
+
+    const serverData = Object.entries(formData).map((item) => {
+      const modiefiedObject = {
+        id: item[0],
+        name: product.name,
+      };
+
+      for (const key in item[1]) {
+        const newKey = key.split("-");
+        const referenceKey = newKey[1];
+        modiefiedObject[referenceKey] = item[1][key];
+      }
+
+      return modiefiedObject;
     });
+
+    console.log("serverData", serverData);
+
+    serverData.forEach((itemProduct) => {
+      updateExistedProduct({
+        productsData: itemProduct,
+        id: product.id,
+      });
+    });
+
     setShowModal();
 
     dispatch(assingAmount(currentBalance));
@@ -102,7 +103,7 @@ function UpdateProduct({
           +newFormData["product-singlePrice"] -
         +newFormData["product-piecesPrice"];
 
-      setValue(`${rowId}.product-pieceProfit`, pieceProfit);
+      setValue(`${product.id}.product-pieceProfit`, pieceProfit);
 
       const singlePieceProfit = Number(
         (+newFormData["product-singlePrice"] *
@@ -111,7 +112,7 @@ function UpdateProduct({
           +newFormData["product-singleCount"]
       ).toFixed(2);
 
-      setValue(`${rowId}.product-singlePieceProfit`, singlePieceProfit);
+      setValue(`${product.id}.product-singlePieceProfit`, singlePieceProfit);
 
       const profitPercentage =
         ((+newFormData["product-singlePrice"] *
@@ -120,13 +121,13 @@ function UpdateProduct({
           +newFormData["product-piecesCount"]) /
         100;
 
-      setValue(`${rowId}.product-profitPercentage`, profitPercentage);
+      setValue(`${product.id}.product-profitPercentage`, profitPercentage);
     } else {
       isMounted.current = true;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
-    rowId,
+    product.id,
     setValue,
     // eslint-disable-next-line react-hooks/exhaustive-deps
     newFormData["product-singleCount"],
@@ -139,6 +140,8 @@ function UpdateProduct({
   ]);
 
   if (response.isLoading) return <Spinner />;
+
+  console.log("FORM DATA", formData);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={styles["update-form"]}>
@@ -160,7 +163,7 @@ function UpdateProduct({
           </h2>
         </div>
         <div className={styles["update-form__input-row"]}>
-          {updateFormInputs(rowId, product).map((input) => {
+          {updateFormInputs(product.id, product).map((input) => {
             return (
               <Input
                 key={input.name}

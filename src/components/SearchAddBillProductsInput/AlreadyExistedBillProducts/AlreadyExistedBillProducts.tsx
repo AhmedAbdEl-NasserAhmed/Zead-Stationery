@@ -28,7 +28,6 @@ function AlreadyExistedBillProducts({
   }, [filtredData.length, setShowExistedProducts]);
 
   function closeSearchMenu() {
-    clearErrors(`${currentRowId}.product-type`);
     clearErrors(`${currentRowId}.product-name`);
 
     setTimeout(() => {
@@ -48,23 +47,19 @@ function AlreadyExistedBillProducts({
   }
 
   useEffect(() => {
-    setValue(`${currentRowId}.product-type`, selectedProduct.type);
+    setSelectedBillProductQuantity(+selectedProduct.totalPiecesCount);
 
     setValue(`${currentRowId}.product-name`, selectedProduct.name);
 
-    setSelectedBillProductQuantity(
-      +selectedProduct.piecesCount * +selectedProduct.singleCount
-    );
+    setValue(`${currentRowId}.productId`, selectedProduct.id);
 
-    setValue(
-      `${currentRowId}.product-billPiecesCount`,
-      selectedProduct.totalPiecesCount
-    );
+    setValue(`${currentRowId}.soldPieces`, selectedProduct.piecesCount);
 
-    setValue(
-      `${currentRowId}.product-billSinglePrice`,
-      selectedProduct.singlePrice
-    );
+    setValue(`${currentRowId}.singleCount`, selectedProduct.singleCount);
+
+    setValue(`${currentRowId}.piecesCount`, selectedProduct.totalPiecesCount);
+
+    setValue(`${currentRowId}.singlePrice`, selectedProduct.singlePrice);
   }, [selectedProduct, setValue, currentRowId, setSelectedBillProductQuantity]);
 
   return (

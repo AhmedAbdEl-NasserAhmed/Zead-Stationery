@@ -1,42 +1,34 @@
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase/firebase";
 import { ProductObject } from "../interfaces/productObject";
-import getNewUpdateObject from "../helpers/getNewUpdateObject";
+import { updatedPropertiesFactory } from "../helpers/updatedPropertiesFactory";
 
-async function useUpdateExistedProduct(productsData: ProductObject) {
-  const docRef = doc(db, "goods", productsData.name);
+async function useUpdateExistedProduct({ productsData, id }) {
+  const docRef = doc(db, "goods", id);
 
   const docSnap = await getDoc(docRef);
 
-  const isAlreadyExisted = docSnap.data();
+  if (!docSnap) return;
 
-  const newUpdatedObject = getNewUpdateObject(isAlreadyExisted, productsData);
+  const isAlreadyExisted: ProductObject = docSnap.data();
 
-  if (!isAlreadyExisted) return;
+  if (!isAlreadyExisted || !docRef) return;
 
-  const updatedObjectRef = doc(db, "goods", isAlreadyExisted?.name);
+  const updatedObjectRef = doc(db, "goods", isAlreadyExisted?.id);
+
+  const updatedProperties: ProductObject = {};
+
+  const updatedObjectData = updatedPropertiesFactory(
+    productsData,
+    updatedProperties,
+    isAlreadyExisted
+  );
+
+  console.log();
 
   try {
     await updateDoc(updatedObjectRef, {
-      piecesCount:
-        Number(isAlreadyExisted?.piecesCount) +
-        Number(newUpdatedObject?.piecesCount),
-      piecesPrice: Number(newUpdatedObject?.piecesPrice),
-      singleCount: Number(newUpdatedObject?.singleCount),
-      singlePrice: Number(newUpdatedObject?.singlePrice),
-      ["pieceProfit"]:
-        +productsData.singlePrice * +productsData.singleCount -
-        +productsData.piecesPrice,
-      ["singlePieceProfit"]: Number(
-        (+productsData.singlePrice * +productsData.singleCount -
-          +productsData.piecesPrice) /
-          +productsData.singleCount
-      ).toFixed(2),
-      ["profitPercentage"]:
-        ((+productsData.singlePrice * +productsData.singleCount -
-          +productsData.piecesPrice) *
-          +productsData.piecesCount) /
-        100,
+      ...updatedObjectData,
     });
 
     return { data: "ok" };

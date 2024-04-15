@@ -1,6 +1,7 @@
 import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
 import { useGetPurchases } from "../hooks/useGetPurchases";
 import useUpdatePurchases from "../hooks/useUpdatePurchases";
+import useSetNewPurchase from "../hooks/useSetNewPurchase";
 
 export const purchasesApi = createApi({
   reducerPath: "purchasesApi",
@@ -11,6 +12,10 @@ export const purchasesApi = createApi({
       queryFn: useGetPurchases,
       providesTags: ["purchases"],
     }),
+    setNewPurchasesData: builder.mutation({
+      queryFn: useSetNewPurchase,
+      invalidatesTags: ["purchases"],
+    }),
     updatePurchasesData: builder.mutation({
       queryFn: useUpdatePurchases,
       invalidatesTags: ["purchases"],
@@ -18,5 +23,8 @@ export const purchasesApi = createApi({
   }),
 });
 
-export const { useGetPurchasesDataQuery, useUpdatePurchasesDataMutation } =
-  purchasesApi;
+export const {
+  useGetPurchasesDataQuery,
+  useUpdatePurchasesDataMutation,
+  useSetNewPurchasesDataMutation,
+} = purchasesApi;

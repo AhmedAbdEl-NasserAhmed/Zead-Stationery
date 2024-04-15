@@ -1,12 +1,15 @@
 export interface ProductObject {
   id?: string;
   name?: string;
-  piecesCount?: string;
-  piecesPrice?: string;
+  type?: string;
+
+  piecesCount?: number;
+  piecesPrice?: number;
   pieceProfit?: number;
-  singleCount?: string;
-  singlePrice?: string;
+  singleCount?: number;
+  singlePrice?: number;
   singlePieceProfit?: number;
   profitPercentage?: number;
-  type?: string;
+  totalPiecesCount?: number;
+  isRefundable?: boolean;
 }

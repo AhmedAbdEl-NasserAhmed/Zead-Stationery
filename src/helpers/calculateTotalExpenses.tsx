@@ -1,4 +1,4 @@
-function calculateTotalExpenses(formData, amount, setCurrentBalance) {
+function calculateTotalExpenses(formData, amount, seterFc) {
   const totalExpenes = Object.values(formData)
     .filter((key) => typeof key !== "string")
     .map(
@@ -9,7 +9,7 @@ function calculateTotalExpenses(formData, amount, setCurrentBalance) {
       if (expense >= 0 && expense < amount) {
         return acc + expense;
       } else {
-        setCurrentBalance(0);
+        seterFc(0);
       }
     }, 0);
 

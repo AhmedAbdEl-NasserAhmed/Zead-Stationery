@@ -37,6 +37,8 @@ function UpdateCapitalForm({ setShowModal }: Props) {
 
   const dispatch = useAppDispatch();
 
+  console.log(formData);
+
   function onSubmit() {
     updateCapital({
       data: {
@@ -48,7 +50,7 @@ function UpdateCapitalForm({ setShowModal }: Props) {
     updateCapitalHistory({
       data: {
         id: crypto.randomUUID(),
-        capital: Number(+formData?.[rowId].capital + amount),
+        capital: Number(+formData?.[rowId].capital),
         date: new Date(Date.now()).toDateString(),
       },
     });

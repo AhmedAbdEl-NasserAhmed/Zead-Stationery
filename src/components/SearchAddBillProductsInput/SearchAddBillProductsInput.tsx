@@ -16,6 +16,7 @@ interface Props {
   errors: object;
   selectedProduct: ProductObject;
   currentRowId: string;
+  label: string;
   disabled: boolean;
   rowId: string;
   setSelectedProducts: (data) => void;
@@ -30,6 +31,7 @@ interface Props {
 
 function SearchAddBillProductsInput({
   name,
+  label,
   register,
   formData,
   errors,
@@ -58,9 +60,12 @@ function SearchAddBillProductsInput({
 
   const filtredData = data?.filter((product: ProductObject) => {
     if (!selectedProducts.includes(product.name))
-      return product.name
-        .toLocaleLowerCase()
-        .includes(String(inputData).toLocaleLowerCase());
+      return (
+        product.totalPiecesCount > 0 &&
+        product.name
+          .toLocaleLowerCase()
+          .includes(String(inputData).toLocaleLowerCase())
+      );
   });
 
   const newFormData = formatFormData(formData);
@@ -69,7 +74,8 @@ function SearchAddBillProductsInput({
 
   return (
     <div className="flex flex-col relative items-center justify-center self-start ">
-      <div className="relative">
+      <div className="relative flex flex-col gap-2">
+        <label className=" font-semibold text-[1.2rem]">{label}</label>
         <input
           disabled={disabled}
           name={name}

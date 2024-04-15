@@ -9,7 +9,10 @@ import {
   useUpdateGoodsDataMutation,
   useUseUpdateExistedProductMutation,
 } from "../../../services/goodsApi";
-import { useUpdatePurchasesDataMutation } from "../../../services/purchasesApi";
+import {
+  useSetNewPurchasesDataMutation,
+  useUpdatePurchasesDataMutation,
+} from "../../../services/purchasesApi";
 import Input from "../../../ui/Input/Input";
 import { useAppSelector } from "../../../interfaces/hooks";
 import { useUpdateCapitalDataMutation } from "../../../services/capitalApi";
@@ -57,7 +60,7 @@ function AddPurchaseForm({ setShowModal }: Props) {
 
   const [updateExistedProduct] = useUseUpdateExistedProductMutation();
 
-  const [updatePurchases] = useUpdatePurchasesDataMutation();
+  const [setNewPurchases] = useSetNewPurchasesDataMutation();
 
   const [updateCapital] = useUpdateCapitalDataMutation();
 
@@ -66,6 +69,8 @@ function AddPurchaseForm({ setShowModal }: Props) {
   const [currentBalance, setCurrentBalance] = useState<number>(amount);
 
   const [currentRowId, setCurrentRowId] = useState<string>();
+
+  console.log("FormData", formData);
 
   useEffect(() => {
     setCurrentRowId(inputRow[inputRow.length - 1]);
@@ -103,7 +108,9 @@ function AddPurchaseForm({ setShowModal }: Props) {
     const serverData = Object.values(formData)
       .filter((item) => typeof item !== "string")
       .map((product) => {
-        const modiefiedObject = {};
+        const modiefiedObject = {
+          isRefundable: true,
+        };
         for (const key in product) {
           const newKey = key.split("-");
           const parts = newKey[1];
@@ -111,17 +118,17 @@ function AddPurchaseForm({ setShowModal }: Props) {
         }
 
         return {
-          id: crypto.randomUUID(),
+          id: crypto.randomUUID().substring(0, 5),
           ...modiefiedObject,
         };
       });
 
     serverData.forEach((product: ProductObject) => {
       updateGoods(product);
-      updateExistedProduct(product);
+      // updateExistedProduct({ productsData: product, id: product.id });
     });
 
-    updatePurchases({
+    setNewPurchases({
       id: crypto.randomUUID(),
       products: serverData,
       sellerName: formData.sellerName,

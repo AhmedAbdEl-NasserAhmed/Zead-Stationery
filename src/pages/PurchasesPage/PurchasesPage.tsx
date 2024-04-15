@@ -4,6 +4,7 @@ import PurchasesInvoice from "../../components/Purchases Invoice/PurchasesInvoic
 import AddPurchase from "../../features/AddPurchase";
 import Container from "../../ui/Container/Container";
 import styles from "./PurchasesPage.module.scss";
+import Menus from "../../ui/Menus/Menus";
 
 function PurchasesPage() {
   const [date, setDate] = useState<Date>(new Date());
@@ -13,7 +14,9 @@ function PurchasesPage() {
       <div className={styles["purchase-page"]}>
         <AddPurchase />
         <DateBar date={date} setDate={setDate} title="Purchases Invoices" />
-        <PurchasesInvoice date={date} />
+        <Menus>
+          <PurchasesInvoice date={date} />
+        </Menus>
       </div>
     </Container>
   );

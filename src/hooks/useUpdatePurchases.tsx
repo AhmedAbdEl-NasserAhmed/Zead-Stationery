@@ -1,10 +1,12 @@
-import { doc, setDoc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase/firebase";
+import { PurchaseInvoice } from "../interfaces/purchaseInvoice";
 
-async function useUpdatePurchases(data) {
+async function useUpdatePurchases(data: PurchaseInvoice) {
+  const purchaseInvoiceRef = doc(db, "purchases", data.id);
   try {
-    await setDoc(doc(db, "purchases", data.id), {
-      ...data,
+    await updateDoc(purchaseInvoiceRef, {
+      products: data.products,
     });
     return { data };
   } catch (err) {

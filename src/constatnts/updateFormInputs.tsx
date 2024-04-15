@@ -1,4 +1,9 @@
-export const updateFormInputs = function (rowId: string, product) {
+import { ProductObject } from "../interfaces/productObject";
+
+export const updateFormInputs = function (
+  rowId: string,
+  product: ProductObject
+) {
   return [
     {
       name: `${rowId}.product-piecesCount`,

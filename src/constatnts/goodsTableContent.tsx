@@ -1,21 +1,29 @@
 export const goodsTableContent = [
-  { name: "Product Name", value: "name" },
+  { name: " Product Name", value: "name" },
   {
     name: "Product Type",
     value: "type",
   },
   {
-    name: "Piece Quantity",
+    name: "Pieces Quantity",
     value: "piecesCount",
   },
+
+  {
+    name: " Units In One Piece",
+    value: "singleCount",
+  },
+
+  {
+    name: "Total Product Quantity ",
+    value: "totalPiecesCount",
+  },
+
   {
     name: "Piece Price",
     value: "piecesPrice",
   },
-  {
-    name: "Num Of Units In One Piece",
-    value: "singleCount",
-  },
+
   {
     name: "Single Piece Price",
     value: "singlePrice",

@@ -22,15 +22,18 @@ function DeleteConfirmation({ product, setShowModal }: Props) {
       <div className="flex gap-[2rem]">
         <Button
           disabled={response.isLoading}
-          onClick={() => deleteProduct(product.name)}
+          onClick={() => {
+            deleteProduct(product.id);
+            setShowModal();
+          }}
           variation="danger"
         >
           Delete
         </Button>
 
         <Button
-          onClick={setShowModal}
           disabled={response.isLoading}
+          onClick={setShowModal}
           variation="secondary"
         >
           cancel

@@ -3,7 +3,6 @@ import { useGetGoods } from "../hooks/useGetGoods";
 import useUpdateGoods from "../hooks/useUpdateGoods";
 import useDeleteProduct from "../hooks/useDeleteProduct";
 import useUpdateExistedProduct from "../hooks/useUpdateExistedProduct";
-import useUpdateProduct from "../hooks/useUpdateProduct";
 
 export const goodsApi = createApi({
   reducerPath: "goodsApi",
@@ -22,10 +21,6 @@ export const goodsApi = createApi({
       queryFn: useUpdateExistedProduct,
       invalidatesTags: ["goods"],
     }),
-    useUpdateProduct: builder.mutation({
-      queryFn: useUpdateProduct,
-      invalidatesTags: ["goods"],
-    }),
     deleteProduct: builder.mutation({
       queryFn: useDeleteProduct,
       invalidatesTags: ["goods"],
@@ -38,5 +33,4 @@ export const {
   useUpdateGoodsDataMutation,
   useUseUpdateExistedProductMutation,
   useDeleteProductMutation,
-  useUseUpdateProductMutation,
 } = goodsApi;

@@ -1,19 +1,16 @@
 import { HiMiniPencilSquare } from "react-icons/hi2";
-import Menus from "../../ui/Menus/Menus";
-import Modal from "../../ui/Modal/Modal";
+import Modal from "../../../ui/Modal/Modal";
+import Menus from "../../../ui/Menus/Menus";
 import { HiTrash } from "react-icons/hi";
-import DeleteConfirmation from "../DeleteConfirmation/DeleteConfirmation";
-import UpdateProduct from "../Forms/UpdateProduct/UpdateProduct";
-import { useUseUpdateProductMutation } from "../../services/goodsApi";
-import { ProductObject } from "../../interfaces/productObject";
+import { ProductObject } from "../../../interfaces/productObject";
+import DeleteConfirmation from "../../../components/DeleteConfirmation/DeleteConfirmation";
+import UpdateProduct from "../../../components/Forms/UpdateProduct/UpdateProduct";
 
 interface Props {
   product?: ProductObject;
 }
 
 function EditGood({ product }: Props) {
-  const [updateProduct, response] = useUseUpdateProductMutation();
-
   return (
     <Modal>
       <Menus.Menu>
@@ -33,11 +30,7 @@ function EditGood({ product }: Props) {
         </Modal.Window>
 
         <Modal.Window name="edit-product">
-          <UpdateProduct
-            product={product}
-            updateProduct={updateProduct}
-            response={response}
-          />
+          <UpdateProduct product={product} />
         </Modal.Window>
       </Menus.Menu>
     </Modal>

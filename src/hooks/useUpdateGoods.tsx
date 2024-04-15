@@ -3,13 +3,13 @@ import { db } from "../firebase/firebase";
 import { ProductObject } from "../interfaces/productObject";
 
 async function useUpdateGoods(productsData: ProductObject) {
-  const docRef = doc(db, "goods", productsData.name);
+  const docRef = doc(db, "goods", productsData.id);
 
   const docSnap = await getDoc(docRef);
 
   try {
     if (!docSnap.data()) {
-      await setDoc(doc(db, "goods", productsData.name), {
+      await setDoc(doc(db, "goods", productsData.id), {
         ...productsData,
         ["totalPiecesCount"]:
           +productsData.piecesCount * +productsData.singleCount,

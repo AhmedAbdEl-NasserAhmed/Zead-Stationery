@@ -1,5 +1,6 @@
 import { ProductObject } from "../../../interfaces/productObject";
 import { PurchaseInvoice } from "../../../interfaces/purchaseInvoice";
+import EditPurchase from "../../../pages/PurchasesPage/EditPurchase/EditPurchase";
 
 import styles from "./PurchasesListItem.module.scss";
 
@@ -15,9 +16,11 @@ function PurchasesListItem({ invoice }: Props) {
         <h2>Date : {invoice.date}</h2>
       </div>
       <div className={styles["invoice-container__product-details"]}>
-        <h2 className="col-span-full justify-self-start text-2xl">
-          Invoice Products Details :
-        </h2>
+        <div className=" flex justify-between w-full col-span-full justify-self-start text-2xl">
+          <h2>Invoice Products Details :</h2>
+          <EditPurchase purchaseInvoice={invoice} />
+        </div>
+
         {invoice?.products?.map((product: ProductObject) => {
           return (
             <h2 key={product.id}>
@@ -28,6 +31,7 @@ function PurchasesListItem({ invoice }: Props) {
           );
         })}
       </div>
+
       <div className={styles["invoice-container__total"]}>
         <h2>
           Invoice Total :{" "}
