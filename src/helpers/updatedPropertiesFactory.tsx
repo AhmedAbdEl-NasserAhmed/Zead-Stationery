@@ -1,24 +1,29 @@
-export function updatedPropertiesFactory(
-  productsData,
-  updatedProperties,
-  isAlreadyExisted
-) {
+import { ProductObject } from "../interfaces/productObject";
+
+export function updatedPropertiesFactory(productsData, isAlreadyExisted) {
+  let updatedProperties: ProductObject = {};
+
   const quantityFlag = !!productsData.quantity;
 
-  const profitPercentaagFlag = !!productsData.profitPercentage;
+  const piecesPriceFlag = !!productsData.piecesPrice;
 
   if (quantityFlag) {
     return (updatedProperties = {
       piecesCount: isAlreadyExisted.piecesCount - productsData.soldPieces,
-      totalPiecesCount:
+
+      totalSingleProductCount:
         productsData.piecesCount +
         (+productsData.quantity % productsData.singleCount),
     });
   }
 
-  if (profitPercentaagFlag) {
+  if (piecesPriceFlag) {
     return (updatedProperties = {
       name: productsData["name"],
+
+      type: productsData["type"]
+        ? productsData["type"]
+        : isAlreadyExisted["type"],
 
       piecesCount: +productsData["piecesCount"],
 
@@ -28,24 +33,8 @@ export function updatedPropertiesFactory(
 
       singlePrice: +productsData["singlePrice"],
 
-      totalPiecesCount:
-        +productsData["piecesCount"] * +productsData["singleCount"],
-
-      pieceProfit:
-        +productsData["singlePrice"] * +productsData["singleCount"] -
-        +productsData["piecesPrice"],
-
-      singlePieceProfit: Math.ceil(
-        (+productsData["singlePrice"] * +productsData["singleCount"] -
-          +productsData["piecesPrice"]) /
-          +productsData["singleCount"]
-      ),
-
-      profitPercentage:
-        ((+productsData["singlePrice"] * +productsData["singleCount"] -
-          +productsData["piecesPrice"]) *
-          +productsData["piecesCount"]) /
-        100,
+      totalSingleProductCount:
+        productsData["piecesCount"] * productsData["singleCount"],
     });
   }
 

@@ -1,9 +1,7 @@
 import { ProductObject } from "./productObject";
 
-export interface PurchaseInvoice {
+export interface InvoiceDataObject {
   id?: string;
   date?: string;
-  sellerName?: string;
   products?: ProductObject[];
-  type?: string;
 }

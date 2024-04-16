@@ -61,12 +61,14 @@ function SearchAddBillProductsInput({
   const filtredData = data?.filter((product: ProductObject) => {
     if (!selectedProducts.includes(product.name))
       return (
-        product.totalPiecesCount > 0 &&
+        +product.piecesCount * +product.piecesPrice > 0 &&
         product.name
           .toLocaleLowerCase()
           .includes(String(inputData).toLocaleLowerCase())
       );
   });
+
+  console.log("filtered Data", filtredData);
 
   const newFormData = formatFormData(formData);
 

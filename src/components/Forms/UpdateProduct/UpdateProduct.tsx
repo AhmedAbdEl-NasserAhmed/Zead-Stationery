@@ -11,14 +11,19 @@ import { useAppDispatch, useAppSelector } from "../../../interfaces/hooks";
 import { assingAmount } from "../../../store/slices/currentCapitalSlice";
 import { updateProductTableContent } from "../../../constatnts/updateProductTableContent";
 import Table from "../../../ui/Table/Table";
-import { useUseUpdateExistedProductMutation } from "../../../services/goodsApi";
 
 interface Props {
   product: ProductObject;
   setShowModal?: () => void;
+  extraElementProps: {
+    updateExistedProduct?: ({ productsData, id }) => void;
+    response?: {
+      isLoading: boolean;
+    };
+  };
 }
 
-function UpdateProduct({ product, setShowModal }: Props) {
+function UpdateProduct({ product, setShowModal, extraElementProps }: Props) {
   const {
     watch,
     handleSubmit,
@@ -30,8 +35,6 @@ function UpdateProduct({ product, setShowModal }: Props) {
   const formData = watch();
 
   const newFormData = updateProductFormatData(formData);
-
-  const [updateExistedProduct, response] = useUseUpdateExistedProductMutation();
 
   const { amount } = useAppSelector((state) => state.currentCapital);
 
@@ -74,9 +77,11 @@ function UpdateProduct({ product, setShowModal }: Props) {
       };
 
       for (const key in item[1]) {
-        const newKey = key.split("-");
-        const referenceKey = newKey[1];
-        modiefiedObject[referenceKey] = item[1][key];
+        if (!key.includes("Profit") && !key.includes("profit")) {
+          const newKey = key.split("-");
+          const referenceKey = newKey[1];
+          modiefiedObject[referenceKey] = item[1][key];
+        }
       }
 
       return modiefiedObject;
@@ -85,7 +90,7 @@ function UpdateProduct({ product, setShowModal }: Props) {
     console.log("serverData", serverData);
 
     serverData.forEach((itemProduct) => {
-      updateExistedProduct({
+      extraElementProps.updateExistedProduct({
         productsData: itemProduct,
         id: product.id,
       });
@@ -104,6 +109,15 @@ function UpdateProduct({ product, setShowModal }: Props) {
         +newFormData["product-piecesPrice"];
 
       setValue(`${product.id}.product-pieceProfit`, pieceProfit);
+
+      const totalProductSingleCount =
+        +newFormData["product-singleCount"] *
+        +newFormData["product-piecesCount"];
+
+      setValue(
+        `${product.id}.product-totalSingleProductCount`,
+        totalProductSingleCount
+      );
 
       const singlePieceProfit = Number(
         (+newFormData["product-singlePrice"] *
@@ -139,7 +153,7 @@ function UpdateProduct({ product, setShowModal }: Props) {
     newFormData["product-piecesCount"],
   ]);
 
-  if (response.isLoading) return <Spinner />;
+  if (extraElementProps.response.isLoading) return <Spinner />;
 
   console.log("FORM DATA", formData);
 
@@ -170,7 +184,9 @@ function UpdateProduct({ product, setShowModal }: Props) {
                 defaultValue={input.defaultValue}
                 formData={formData}
                 errors={errors}
-                disabled={input.disabled}
+                disabled={
+                  input.disabled || extraElementProps.response.isLoading
+                }
                 register={register}
                 type={input.type}
                 name={input.name}
@@ -182,11 +198,14 @@ function UpdateProduct({ product, setShowModal }: Props) {
         </div>
       </div>
       <div className="flex justify-start gap-10">
-        <Button disabled={response.isLoading} variation="primary">
+        <Button
+          disabled={extraElementProps.response.isLoading}
+          variation="primary"
+        >
           Update
         </Button>
         <Button
-          disabled={response.isLoading}
+          disabled={extraElementProps.response.isLoading}
           onClick={setShowModal}
           variation="secondary"
         >

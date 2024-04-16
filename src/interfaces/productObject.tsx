@@ -12,4 +12,5 @@ export interface ProductObject {
   profitPercentage?: number;
   totalPiecesCount?: number;
   isRefundable?: boolean;
+  totalSingleProductCount?: number;
 }

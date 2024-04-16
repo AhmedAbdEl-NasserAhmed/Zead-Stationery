@@ -74,20 +74,38 @@ export const updateFormInputs = function (
       },
     },
     {
+      name: `${rowId}.product-totalSingleProductCount`,
+      defaultValue: +product?.["piecesCount"] * +product?.["singleCount"],
+
+      type: "number",
+      disabled: true,
+    },
+    {
       name: `${rowId}.product-pieceProfit`,
-      defaultValue: product.pieceProfit,
+      defaultValue:
+        +product?.["singlePrice"] * +product?.["singleCount"] -
+        +product?.["piecesPrice"],
+
       type: "number",
       disabled: true,
     },
     {
       name: `${rowId}.product-singlePieceProfit`,
-      defaultValue: product.singlePieceProfit,
+      defaultValue: Number(
+        (+product?.["singlePrice"] * +product?.["singleCount"] -
+          +product?.["piecesPrice"]) /
+          +product?.["singleCount"]
+      ).toFixed(2),
       type: "number",
       disabled: true,
     },
     {
       name: `${rowId}.product-profitPercentage`,
-      defaultValue: product.profitPercentage,
+      defaultValue:
+        ((+product?.["singlePrice"] * +product?.["singleCount"] -
+          +product?.["piecesPrice"]) *
+          +product?.["piecesCount"]) /
+        100,
       type: "number",
       disabled: true,
     },

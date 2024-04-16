@@ -1,5 +1,4 @@
 import { updatePurchaseInputs } from "../../../constatnts/updataPurchaseInputs";
-import { PurchaseInvoice } from "../../../interfaces/purchaseInvoice";
 import styles from "./EditPurchaseInvoice.module.scss";
 import Input from "../../../ui/Input/Input";
 import { ProductObject } from "../../../interfaces/productObject";
@@ -11,13 +10,14 @@ import { useAppSelector } from "../../../interfaces/hooks";
 import { useEffect, useRef, useState } from "react";
 import calculateTotalExpenses from "../../../helpers/calculateTotalExpenses";
 import { useUpdateCapitalDataMutation } from "../../../services/capitalApi";
+import { InvoiceDataObject } from "../../../interfaces/invoiceDataObject";
 
 interface Props {
-  purchaseInvoice: PurchaseInvoice;
   setShowModal?: () => void;
+  optionElementProps: InvoiceDataObject;
 }
 
-function EditPurchaseInvoice({ purchaseInvoice, setShowModal }: Props) {
+function EditPurchaseInvoice({ optionElementProps, setShowModal }: Props) {
   const {
     register,
     handleSubmit,
@@ -46,7 +46,7 @@ function EditPurchaseInvoice({ purchaseInvoice, setShowModal }: Props) {
 
   const isMount = useRef<boolean>(false);
 
-  const totalPrice = purchaseInvoice.products.reduce(
+  const totalPrice = optionElementProps?.products.reduce(
     (acc, product) => acc + product.piecesCount * product.piecesPrice,
     0
   );
@@ -97,7 +97,7 @@ function EditPurchaseInvoice({ purchaseInvoice, setShowModal }: Props) {
     });
 
     updatePurchases({
-      id: purchaseInvoice.id,
+      id: optionElementProps.id,
       products: serverData,
       date: new Date().toDateString(),
     });
@@ -124,7 +124,8 @@ function EditPurchaseInvoice({ purchaseInvoice, setShowModal }: Props) {
       </div>
 
       <div className={styles["edit-purchase__row-input"]}>
-        {purchaseInvoice.products.map((product: ProductObject) => {
+        {optionElementProps?.products?.map((product: ProductObject) => {
+          console.log("product", product);
           return (
             <div key={product.id} className="flex gap-10 ">
               {updatePurchaseInputs(product, product.id).map((input) => {

@@ -5,12 +5,24 @@ import TableRow from "./TableRow/TableRow";
 
 interface Props {
   title: string;
-  headers: object[];
+  headers?: (object: ProductObject) => object[];
   data: ProductObject[];
   ExtraElement?: React.FC;
+  extraElementProps?: {
+    updateExistedProduct: ({ productsData, id }) => void;
+    response: {
+      isLoading: boolean;
+    };
+  };
 }
 
-function Table({ title, headers, data, ExtraElement }: Props) {
+function Table({
+  title,
+  headers,
+  data,
+  ExtraElement,
+  extraElementProps,
+}: Props) {
   return (
     <div>
       <h2 className="mb-[2rem] text-3xl font-semibold ">{title}</h2>
@@ -19,7 +31,12 @@ function Table({ title, headers, data, ExtraElement }: Props) {
           <TableHeader headers={headers} />
         </thead>
         <tbody>
-          <TableRow ExtraElement={ExtraElement} headers={headers} data={data} />
+          <TableRow
+            extraElementProps={extraElementProps}
+            ExtraElement={ExtraElement}
+            headers={headers}
+            data={data}
+          />
         </tbody>
       </table>
     </div>

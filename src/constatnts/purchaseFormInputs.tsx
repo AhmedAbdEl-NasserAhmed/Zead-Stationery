@@ -19,7 +19,7 @@ export const purchaseFormInputs = function (
       name: `${rowId}.product-piecesCount`,
       type: "number",
       disabled: false,
-      placeholder: "pieces Count",
+      placeholder: "Pieces Count",
       validationInputs: {
         required: {
           value: true,
@@ -35,7 +35,7 @@ export const purchaseFormInputs = function (
       name: `${rowId}.product-piecesPrice`,
       type: "number",
       disabled: false,
-      placeholder: "pieces Price",
+      placeholder: "Pieces Price",
       validationInputs: {
         required: {
           value: true,
@@ -59,6 +59,7 @@ export const purchaseFormInputs = function (
         },
       },
     },
+
     {
       name: `${rowId}.product-singlePrice`,
       type: "number",
@@ -71,5 +72,11 @@ export const purchaseFormInputs = function (
         },
       },
     },
+    // {
+    //   name: `${rowId}.product-totalSingleProductCount`,
+    //   type: "number",
+    //   disabled: true,
+    //   placeholder: "Total Single Product Count",
+    // },
   ];
 };

@@ -16,15 +16,10 @@ async function useUpdateExistedProduct({ productsData, id }) {
 
   const updatedObjectRef = doc(db, "goods", isAlreadyExisted?.id);
 
-  const updatedProperties: ProductObject = {};
-
   const updatedObjectData = updatedPropertiesFactory(
     productsData,
-    updatedProperties,
     isAlreadyExisted
   );
-
-  console.log();
 
   try {
     await updateDoc(updatedObjectRef, {

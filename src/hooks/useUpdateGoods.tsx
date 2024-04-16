@@ -11,21 +11,6 @@ async function useUpdateGoods(productsData: ProductObject) {
     if (!docSnap.data()) {
       await setDoc(doc(db, "goods", productsData.id), {
         ...productsData,
-        ["totalPiecesCount"]:
-          +productsData.piecesCount * +productsData.singleCount,
-        ["pieceProfit"]:
-          +productsData.singlePrice * +productsData.singleCount -
-          +productsData.piecesPrice,
-        ["singlePieceProfit"]: Number(
-          (+productsData.singlePrice * +productsData.singleCount -
-            +productsData.piecesPrice) /
-            +productsData.singleCount
-        ).toFixed(2),
-        ["profitPercentage"]:
-          ((+productsData.singlePrice * +productsData.singleCount -
-            +productsData.piecesPrice) *
-            +productsData.piecesCount) /
-          100,
       });
 
       return { data: productsData };

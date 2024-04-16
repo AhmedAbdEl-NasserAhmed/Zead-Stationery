@@ -1,19 +1,24 @@
-function TableRow({ data, headers, ExtraElement }) {
+function TableRow({ data, headers, ExtraElement, extraElementProps }) {
   return (
     <>
       {data?.map((item, index) => {
         return (
           <tr key={index}>
-            {headers.map((header, index) => (
-              <th key={index}>
-                {item[header.value]}
-                {header.name === "Actions" && ExtraElement ? (
-                  <ExtraElement product={item} />
-                ) : (
-                  ""
-                )}
-              </th>
-            ))}
+            {headers(item).map((header, index) => {
+              return (
+                <th key={index}>
+                  {item[header.serverKey] || header.value}
+                  {header.name === "Actions" && ExtraElement ? (
+                    <ExtraElement
+                      extraElementProps={extraElementProps}
+                      product={item}
+                    />
+                  ) : (
+                    ""
+                  )}
+                </th>
+              );
+            })}
           </tr>
         );
       })}

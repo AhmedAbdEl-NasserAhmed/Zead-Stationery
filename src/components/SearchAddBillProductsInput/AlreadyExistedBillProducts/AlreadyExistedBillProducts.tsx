@@ -47,7 +47,9 @@ function AlreadyExistedBillProducts({
   }
 
   useEffect(() => {
-    setSelectedBillProductQuantity(+selectedProduct.totalPiecesCount);
+    setSelectedBillProductQuantity(
+      +selectedProduct.piecesCount * +selectedProduct.singleCount
+    );
 
     setValue(`${currentRowId}.product-name`, selectedProduct.name);
 

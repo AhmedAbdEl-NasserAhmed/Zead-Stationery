@@ -5,14 +5,8 @@ import { useEffect, useState } from "react";
 import Button from "../../../ui/Button/Button";
 import scrollIntoView from "../../../helpers/scrollIntoView";
 import { HiCheckCircle, HiOutlineTrash } from "react-icons/hi";
-import {
-  useUpdateGoodsDataMutation,
-  useUseUpdateExistedProductMutation,
-} from "../../../services/goodsApi";
-import {
-  useSetNewPurchasesDataMutation,
-  useUpdatePurchasesDataMutation,
-} from "../../../services/purchasesApi";
+import { useUpdateGoodsDataMutation } from "../../../services/goodsApi";
+import { useSetNewPurchasesDataMutation } from "../../../services/purchasesApi";
 import Input from "../../../ui/Input/Input";
 import { useAppSelector } from "../../../interfaces/hooks";
 import { useUpdateCapitalDataMutation } from "../../../services/capitalApi";
@@ -58,7 +52,7 @@ function AddPurchaseForm({ setShowModal }: Props) {
 
   const [updateGoods, response] = useUpdateGoodsDataMutation();
 
-  const [updateExistedProduct] = useUseUpdateExistedProductMutation();
+  // const [updateExistedProduct] = useUseUpdateExistedProductMutation();
 
   const [setNewPurchases] = useSetNewPurchasesDataMutation();
 
@@ -89,6 +83,25 @@ function AddPurchaseForm({ setShowModal }: Props) {
   useEffect(() => {
     setCurrentBalance(amount - expense);
   }, [amount, expense]);
+
+  // useEffect(() => {
+  //   if (!currentRowId) return;
+
+  //   const totalSingleProduct =
+  //     +formData?.[currentRowId]?.["product-piecesCount"] *
+  //     +formData?.[currentRowId]?.["product-singleCount"];
+
+  //   setValue(
+  //     `${currentRowId}.product-totalSingleProductCount`,
+  //     totalSingleProduct
+  //   );
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  //   +formData?.[currentRowId]?.["product-piecesCount"] *
+  //     // eslint-disable-next-line react-hooks/exhaustive-deps
+  //     +formData?.[currentRowId]?.["product-singleCount"],
+  // ]);
 
   function addNewRow() {
     addingClasses("empty", "not-finished");

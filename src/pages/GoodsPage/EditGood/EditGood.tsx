@@ -8,9 +8,10 @@ import UpdateProduct from "../../../components/Forms/UpdateProduct/UpdateProduct
 
 interface Props {
   product?: ProductObject;
+  extraElementProps: object;
 }
 
-function EditGood({ product }: Props) {
+function EditGood({ product, extraElementProps }: Props) {
   return (
     <Modal>
       <Menus.Menu>
@@ -30,7 +31,10 @@ function EditGood({ product }: Props) {
         </Modal.Window>
 
         <Modal.Window name="edit-product">
-          <UpdateProduct product={product} />
+          <UpdateProduct
+            extraElementProps={extraElementProps}
+            product={product}
+          />
         </Modal.Window>
       </Menus.Menu>
     </Modal>
