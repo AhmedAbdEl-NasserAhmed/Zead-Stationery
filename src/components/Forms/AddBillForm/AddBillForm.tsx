@@ -16,6 +16,9 @@ import { useDispatch } from "react-redux";
 import { assingAmount } from "../../../store/slices/currentCapitalSlice";
 import { useUpdateCapitalDataMutation } from "../../../services/capitalApi";
 import { useUseUpdateExistedProductMutation } from "../../../services/goodsApi";
+import { useSetNewBillMutation } from "../../../services/billsAPi";
+import { formatErrorObject } from "../../../helpers/formatErrorObject";
+import { modifyingFormDataBillInputs } from "../../../helpers/modifyingFormDataBillInputs";
 
 interface Props {
   setShowModal?: () => void;
@@ -72,6 +75,12 @@ function AddBillForm({ setShowModal }: Props) {
 
   const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
 
+  const [setNewBill, response] = useSetNewBillMutation();
+
+  const newFormData = formatFormData(formData, "buyerName");
+
+  const newFormErros = formatErrorObject(errors, "buyerName");
+
   useEffect(() => {
     setCurrentRowId(inputRows[inputRows.length - 1]);
   }, [inputRows]);
@@ -102,8 +111,6 @@ function AddBillForm({ setShowModal }: Props) {
 
       setValue(`${currentRowId}.piecesCount`, totalQuantity);
 
-      // const remainingPiecesCounts=
-
       const piecesDecrement = Math.floor(
         +formData?.[currentRowId]?.["quantity"] /
           +formData?.[currentRowId]?.["singleCount"]
@@ -125,8 +132,6 @@ function AddBillForm({ setShowModal }: Props) {
 
   function addNewRow() {
     addingClasses("empty", "not-finished");
-
-    const newFormData = formatFormData(formData);
 
     for (const item in newFormData) {
       if (
@@ -156,39 +161,23 @@ function AddBillForm({ setShowModal }: Props) {
     setSelectedBillProductQuantity(0);
   }
 
-  console.log("FormData", formData);
-
   function onSubmit() {
-    const serverData = Object.entries(formData).map((item) => {
-      const modiefiedObject = {
-        productId: "",
-      };
-
-      for (const key in item[1]) {
-        const newKey = key.split("-");
-        const referenceKey = newKey[1];
-        if (key.includes("-")) {
-          modiefiedObject[referenceKey] = item[1][key];
-        } else {
-          modiefiedObject[key] = item[1][key];
-        }
-      }
-
-      return modiefiedObject;
-    });
+    const serverData = modifyingFormDataBillInputs(formData);
 
     serverData.forEach((product) => {
       updateExistedProduct({
         productsData: product,
-        id: product.productId,
+        id: product.id,
       });
     });
 
-    dispatch(assingAmount(currentBalance));
-
-    reset();
-
-    setShowModal();
+    setNewBill({
+      id: crypto.randomUUID(),
+      products: serverData,
+      date: new Date(Date.now()).toDateString(),
+      buyerName: formData["buyerName"],
+      isRefunded: false,
+    });
 
     updateCapital({
       data: {
@@ -196,17 +185,56 @@ function AddBillForm({ setShowModal }: Props) {
         amount: Number(currentBalance),
       },
     });
+
+    dispatch(assingAmount(currentBalance));
+
+    reset();
+
+    setShowModal();
   }
+
+  // console.log("Form Data", formData);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={styles["bill-form"]}>
       <div id="formContainer" className={styles["bill-form__container"]}>
-        <div className="flex justify-between items-center">
-          <h2 className="text-[2.2rem] font-semibold">Add A Bill</h2>
-          <h2 className="text-[2.2rem] font-semibold text-purple-500">
-            {currentBalance} EGP
-          </h2>
+        <div className="flex font-semibold justify-between ">
+          <h2 className="text-3xl">Add Bill</h2>
+          <span
+            className="text-3xl cursor-pointer"
+            onClick={() => setShowModal()}
+          >
+            X
+          </span>
         </div>
+
+        <hr />
+
+        <div className="flex flex-col gap-5">
+          <div className="flex justify-between">
+            <div className="flex flex-col gap-5">
+              <h2 className="text-4xl">Buyer Name</h2>
+              <Input
+                newFormData={newFormData}
+                newFormErros={newFormErros}
+                register={register}
+                placeholder="Buyer Name"
+                type="text"
+                name="buyerName"
+                validtionInputs={{
+                  required: {
+                    value: true,
+                    message: "This field is required",
+                  },
+                }}
+              />
+            </div>
+            <h2 className="text-[2.5rem] font-bold text-purple-600">
+              {currentBalance} EGP
+            </h2>
+          </div>
+        </div>
+
         <div className="flex flex-col gap-[4rem]">
           {inputRows.map((rowId) => {
             return (
@@ -245,11 +273,11 @@ function AddBillForm({ setShowModal }: Props) {
                       onClick={input.onClick}
                       defaultValue={input.defaultValue}
                       key={input.name}
-                      formData={formData}
+                      newFormData={newFormData}
                       name={input.name}
                       type={input.type}
-                      disabled={input.disabled}
-                      errors={errors}
+                      disabled={input.disabled || response.isLoading}
+                      newFormErros={newFormErros}
                       register={register}
                       placeholder={input.placeholder}
                       validtionInputs={input.validationInputs}
@@ -276,6 +304,7 @@ function AddBillForm({ setShowModal }: Props) {
         </div>
         <div className={styles["bill-form__buttons"]}>
           <Button
+            disabled={response.isLoading}
             variation="primary"
             type="button"
             onClick={() => {
@@ -294,7 +323,11 @@ function AddBillForm({ setShowModal }: Props) {
           >
             Add new product
           </Button>
-          <Button variation="secondary" type="submit">
+          <Button
+            disabled={response.isLoading}
+            variation="secondary"
+            type="submit"
+          >
             Submit
           </Button>
         </div>

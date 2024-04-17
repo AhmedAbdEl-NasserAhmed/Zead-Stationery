@@ -6,11 +6,12 @@ import Button from "../../../ui/Button/Button";
 import Spinner from "../../../ui/Spinner/Spinner";
 import { updateFormInputs } from "../../../constatnts/updateFormInputs";
 import { useEffect, useRef, useState } from "react";
-import updateProductFormatData from "../../../helpers/updateProductFormatData";
 import { useAppDispatch, useAppSelector } from "../../../interfaces/hooks";
 import { assingAmount } from "../../../store/slices/currentCapitalSlice";
 import { updateProductTableContent } from "../../../constatnts/updateProductTableContent";
 import Table from "../../../ui/Table/Table";
+import { formatFormData } from "../../../helpers/formatFormData";
+import { formatErrorObject } from "../../../helpers/formatErrorObject";
 
 interface Props {
   product: ProductObject;
@@ -34,7 +35,11 @@ function UpdateProduct({ product, setShowModal, extraElementProps }: Props) {
 
   const formData = watch();
 
-  const newFormData = updateProductFormatData(formData);
+  // const newFormData = updateProductFormatData(formData);
+
+  const newFormData = formatFormData(formData, "");
+
+  const newFormErros = formatErrorObject(errors, "");
 
   const { amount } = useAppSelector((state) => state.currentCapital);
 
@@ -86,8 +91,6 @@ function UpdateProduct({ product, setShowModal, extraElementProps }: Props) {
 
       return modiefiedObject;
     });
-
-    console.log("serverData", serverData);
 
     serverData.forEach((itemProduct) => {
       extraElementProps.updateExistedProduct({
@@ -155,7 +158,7 @@ function UpdateProduct({ product, setShowModal, extraElementProps }: Props) {
 
   if (extraElementProps.response.isLoading) return <Spinner />;
 
-  console.log("FORM DATA", formData);
+  console.log("newFormData", newFormData);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={styles["update-form"]}>
@@ -182,8 +185,8 @@ function UpdateProduct({ product, setShowModal, extraElementProps }: Props) {
               <Input
                 key={input.name}
                 defaultValue={input.defaultValue}
-                formData={formData}
-                errors={errors}
+                newFormData={newFormData}
+                newFormErros={newFormErros}
                 disabled={
                   input.disabled || extraElementProps.response.isLoading
                 }

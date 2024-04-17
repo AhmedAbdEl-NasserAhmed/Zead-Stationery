@@ -1,8 +1,10 @@
 import { InvoiceDataObject } from "../../../interfaces/invoiceDataObject";
 import { InvoiceDetails } from "../../../interfaces/invoiceDetails";
 import { ProductObject } from "../../../interfaces/productObject";
+import BillTypeAmount from "../InvoiceDetailsType/BillTypeAmount/BillTypeAmount";
 
 import InvoiceDetailsType from "../InvoiceDetailsType/InvoiceDetailsType";
+import PurchaseTypeAmount from "../InvoiceDetailsType/PurchaseTypeAmount/PurchaseTypeAmount";
 import styles from "./InvoiceListItem.module.scss";
 
 interface OptionElementProps {
@@ -45,26 +47,24 @@ function InvoiceListItem({
         {invoice?.products?.map((product: ProductObject) => {
           return (
             <InvoiceDetailsType
+              product={product}
               key={product.id}
               type={type}
-              product={product}
+              invoiceDetails={invoiceDetails}
             />
           );
         })}
       </div>
 
       <div className={styles["invoice-container__total"]}>
-        <h2>
-          Invoice Total :{" "}
-          {invoice?.products?.reduce(
-            (acc, product) =>
-              acc +
-              Number(product[invoiceDetails.total.number1]) *
-                Number(product[invoiceDetails.total.number2]),
-            0
-          )}{" "}
-          EGP
-        </h2>
+        {type === "purchase" ? (
+          <PurchaseTypeAmount
+            invoice={invoice}
+            invoiceDetails={invoiceDetails}
+          />
+        ) : (
+          <BillTypeAmount invoice={invoice} invoiceDetails={invoiceDetails} />
+        )}
       </div>
     </li>
   );

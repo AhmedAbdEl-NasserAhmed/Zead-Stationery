@@ -72,11 +72,5 @@ export const purchaseFormInputs = function (
         },
       },
     },
-    // {
-    //   name: `${rowId}.product-totalSingleProductCount`,
-    //   type: "number",
-    //   disabled: true,
-    //   placeholder: "Total Single Product Count",
-    // },
   ];
 };

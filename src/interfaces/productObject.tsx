@@ -3,6 +3,7 @@ export interface ProductObject {
   name?: string;
   type?: string;
 
+  quantity?: number;
   piecesCount?: number;
   piecesPrice?: number;
   pieceProfit?: number;
@@ -12,5 +13,7 @@ export interface ProductObject {
   profitPercentage?: number;
   totalPiecesCount?: number;
   isRefundable?: boolean;
+  soldPieces?: number;
   totalSingleProductCount?: number;
+  totalPrice?: number;
 }

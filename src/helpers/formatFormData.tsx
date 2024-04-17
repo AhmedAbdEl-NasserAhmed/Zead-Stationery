@@ -1,10 +1,10 @@
-export function formatFormData(data: object) {
+export function formatFormData(data: object, escapeSpecialKey: string) {
   const newData = {};
 
   Object.keys(data).forEach((key) => {
-    if (key !== "sellerName") {
+    if (key !== escapeSpecialKey) {
       for (const item in data[key]) {
-        newData[`${key}.${item}`] = data[key][item];
+        newData[`${item}`] = data[key][item];
       }
     }
   });

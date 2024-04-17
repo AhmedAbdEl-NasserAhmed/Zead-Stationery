@@ -1,0 +1,30 @@
+.refund-bill {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  height: 55vh;
+  overflow-y: scroll;
+  width: 90vw;
+  border-radius: 4px;
+  background-color: var(--color-white);
+  padding: 2.5rem;
+  padding: 2.5rem;
+
+  &__row-input {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 3rem;
+  }
+
+  &__buttons {
+    display: flex;
+    gap: 2rem;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1.5rem;
+    margin-top: 5rem;
+    margin-top: auto;
+  }
+}

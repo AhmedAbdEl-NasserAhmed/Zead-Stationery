@@ -16,6 +16,7 @@ import calculateTotalExpenses from "../../../helpers/calculateTotalExpenses";
 import addingClasses from "../../../helpers/addingClasses";
 import { ProductObject } from "../../../interfaces/productObject";
 import SearchAddPurchaseProdcutsInput from "../../SearchAddPurchaseProdcutsInput/SearchAddPurchaseProdcutsInput";
+import { formatErrorObject } from "../../../helpers/formatErrorObject";
 
 interface Props {
   setShowModal?: () => void;
@@ -64,7 +65,11 @@ function AddPurchaseForm({ setShowModal }: Props) {
 
   const [currentRowId, setCurrentRowId] = useState<string>();
 
-  console.log("FormData", formData);
+  const newFormData = formatFormData(formData, "sellerName");
+
+  const newFormErros = formatErrorObject(errors, "sellerName");
+
+  console.log("FormData", newFormData);
 
   useEffect(() => {
     setCurrentRowId(inputRow[inputRow.length - 1]);
@@ -84,29 +89,8 @@ function AddPurchaseForm({ setShowModal }: Props) {
     setCurrentBalance(amount - expense);
   }, [amount, expense]);
 
-  // useEffect(() => {
-  //   if (!currentRowId) return;
-
-  //   const totalSingleProduct =
-  //     +formData?.[currentRowId]?.["product-piecesCount"] *
-  //     +formData?.[currentRowId]?.["product-singleCount"];
-
-  //   setValue(
-  //     `${currentRowId}.product-totalSingleProductCount`,
-  //     totalSingleProduct
-  //   );
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  //   +formData?.[currentRowId]?.["product-piecesCount"] *
-  //     // eslint-disable-next-line react-hooks/exhaustive-deps
-  //     +formData?.[currentRowId]?.["product-singleCount"],
-  // ]);
-
   function addNewRow() {
     addingClasses("empty", "not-finished");
-
-    const newFormData = formatFormData(formData);
 
     for (const item in newFormData) {
       if (newFormData[item] === "" || currentBalance < 0) return;
@@ -121,9 +105,8 @@ function AddPurchaseForm({ setShowModal }: Props) {
     const serverData = Object.values(formData)
       .filter((item) => typeof item !== "string")
       .map((product) => {
-        const modiefiedObject = {
-          isRefundable: true,
-        };
+        const modiefiedObject = {};
+
         for (const key in product) {
           const newKey = key.split("-");
           const parts = newKey[1];
@@ -165,7 +148,7 @@ function AddPurchaseForm({ setShowModal }: Props) {
     setInputRow((data) => data.filter((row) => row !== rowID));
   }
 
-  // console.log("FormData", formData);
+  console.log("FormData", formData);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={styles["purchase-form"]}>
@@ -188,8 +171,8 @@ function AddPurchaseForm({ setShowModal }: Props) {
               <div className="flex flex-col gap-5">
                 <h2 className="text-4xl">Seller Name</h2>
                 <Input
-                  formData={formData}
-                  errors={errors}
+                  newFormData={newFormData}
+                  newFormErros={newFormErros}
                   register={register}
                   placeholder="Seller Name"
                   type="text"
@@ -233,11 +216,11 @@ function AddPurchaseForm({ setShowModal }: Props) {
                     return (
                       <Input
                         key={input.name}
-                        formData={formData}
+                        newFormData={newFormData}
                         name={input.name}
                         type={input.type}
                         disabled={input.disabled}
-                        errors={errors}
+                        newFormErros={newFormErros}
                         register={register}
                         placeholder={input.placeholder}
                         validtionInputs={input.validationInputs}

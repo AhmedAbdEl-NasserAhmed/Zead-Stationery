@@ -24,17 +24,19 @@ function InvoiceList({
 
   return (
     <ul className="flex flex-col gap-[4rem]">
-      {data.map((invoice: InvoiceDataObject) => (
-        <InvoiceListItem
-          invoiceDetails={invoiceDetails}
-          heading={heading}
-          type={type}
-          key={invoice.id}
-          invoice={invoice}
-          OptionElement={OptionElement}
-          optionElementProps={invoice}
-        />
-      ))}
+      {data.map((invoice: InvoiceDataObject) => {
+        return (
+          <InvoiceListItem
+            key={invoice.id}
+            invoiceDetails={invoiceDetails}
+            heading={heading}
+            type={type}
+            invoice={invoice}
+            OptionElement={OptionElement}
+            optionElementProps={invoice}
+          />
+        );
+      })}
     </ul>
   );
 }

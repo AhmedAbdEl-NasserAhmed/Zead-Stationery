@@ -11,6 +11,8 @@ import { useEffect, useRef, useState } from "react";
 import calculateTotalExpenses from "../../../helpers/calculateTotalExpenses";
 import { useUpdateCapitalDataMutation } from "../../../services/capitalApi";
 import { InvoiceDataObject } from "../../../interfaces/invoiceDataObject";
+import { formatFormData } from "../../../helpers/formatFormData";
+import { formatErrorObject } from "../../../helpers/formatErrorObject";
 
 interface Props {
   setShowModal?: () => void;
@@ -56,6 +58,10 @@ function EditPurchaseInvoice({ optionElementProps, setShowModal }: Props) {
   const [preveTotalPrice, setTotalPrevPrice] = useState<number>(
     amount + totalPrice
   );
+
+  const newFormData = formatFormData(formData, "");
+
+  const newFormErros = formatErrorObject(errors, "");
 
   useEffect(() => {
     if (isMount.current) {
@@ -134,11 +140,11 @@ function EditPurchaseInvoice({ optionElementProps, setShowModal }: Props) {
                     label={input.label}
                     defaultValue={input.defaultValue}
                     key={input.name}
-                    formData={formData}
+                    newFormData={newFormData}
                     name={input.name}
                     type={input.type}
                     disabled={input.disabled}
-                    errors={errors}
+                    newFormErros={newFormErros}
                     register={register}
                     placeholder={input.placeholder}
                     validtionInputs={input.validationInputs}

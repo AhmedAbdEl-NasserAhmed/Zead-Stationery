@@ -6,11 +6,11 @@ export const billFormInputs = function (
 ) {
   return [
     {
-      id: `${rowId}.productId`,
-      name: `${rowId}.productId`,
+      id: `${rowId}.id`,
+      name: `${rowId}.id`,
       type: "text",
       disabled: true,
-      placeholder: "Product ID ",
+      placeholder: " ID ",
       label: "Product ID",
     },
     {
@@ -86,6 +86,12 @@ export const billFormInputs = function (
       defaultValue: 0,
       disabled: true,
       placeholder: "Total Price",
+      validationInputs: {
+        required: {
+          value: true,
+          message: "This field is required",
+        },
+      },
     },
   ];
 };

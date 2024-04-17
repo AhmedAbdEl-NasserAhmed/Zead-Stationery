@@ -1,4 +1,4 @@
-import { ProductObject } from "../interfaces/productObject";
+import { ProductObject } from "./productObject";
 
 export interface UpdateProductProps {
   data: {

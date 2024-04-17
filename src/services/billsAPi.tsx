@@ -11,11 +11,11 @@ export const billsApi = createApi({
       queryFn: useGetBills,
       providesTags: ["bills"],
     }),
-    setNewBill: builder.query({
+    setNewBill: builder.mutation({
       queryFn: useSetNewBill,
-      providesTags: ["bills"],
+      invalidatesTags: ["bills"],
     }),
   }),
 });
 
-export const { useGetBillslDataQuery, useSetNewBillQuery } = billsApi;
+export const { useGetBillslDataQuery, useSetNewBillMutation } = billsApi;

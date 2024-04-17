@@ -1,15 +1,20 @@
+import { InvoiceDetails } from "../../../../interfaces/invoiceDetails";
 import { ProductObject } from "../../../../interfaces/productObject";
 
 interface Props {
   product: ProductObject;
+  invoiceDetails: InvoiceDetails;
 }
 
-function PurchaseTypeDetails({ product }: Props) {
+function PurchaseTypeDetails({ product, invoiceDetails }: Props) {
   return (
     <h2 key={product.id}>
-      {product.name} - {product.type} : {product.piecesCount} *{" "}
-      {product.piecesCount} ={" "}
-      {Number(product.piecesCount) * Number(product.piecesPrice)} EGP
+      {product[invoiceDetails.name]} - {product[invoiceDetails.type]} :{" "}
+      {product[invoiceDetails.piecesCount]} *{" "}
+      {product[invoiceDetails.piecesCount]} ={" "}
+      {Number(product[invoiceDetails.piecesCount]) *
+        Number(product[invoiceDetails.piecesPrice])}{" "}
+      EGP
     </h2>
   );
 }

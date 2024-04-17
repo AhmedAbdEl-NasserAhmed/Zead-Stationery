@@ -68,11 +68,9 @@ function SearchAddBillProductsInput({
       );
   });
 
-  console.log("filtered Data", filtredData);
+  const newFormData = formatFormData(formData, "");
 
-  const newFormData = formatFormData(formData);
-
-  const newFormErros = formatErrorObject(errors);
+  const newFormErros = formatErrorObject(errors, "");
 
   return (
     <div className="flex flex-col relative items-center justify-center self-start ">

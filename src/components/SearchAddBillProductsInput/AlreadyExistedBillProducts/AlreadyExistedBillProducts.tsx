@@ -53,7 +53,7 @@ function AlreadyExistedBillProducts({
 
     setValue(`${currentRowId}.product-name`, selectedProduct.name);
 
-    setValue(`${currentRowId}.productId`, selectedProduct.id);
+    setValue(`${currentRowId}.id`, selectedProduct.id);
 
     setValue(`${currentRowId}.soldPieces`, selectedProduct.piecesCount);
 

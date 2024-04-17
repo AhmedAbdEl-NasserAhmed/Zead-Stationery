@@ -1,5 +1,3 @@
-import { formatErrorObject } from "../../helpers/formatErrorObject";
-import { formatFormData } from "../../helpers/formatFormData";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import styles from "./Input.module.scss";
 
@@ -10,10 +8,10 @@ interface InputProps {
   name: string;
   size?: string;
   register: UseFormRegister<FieldValues>;
-  errors: object;
+  newFormErros: object;
   label?: string;
   id?: string;
-  formData?: object;
+  newFormData?: object;
   onClick?: () => void;
   rowId?: string;
   disabled?: boolean;
@@ -39,9 +37,9 @@ function Input({
   name,
   placeholder,
   validtionInputs,
-  errors,
+  newFormErros,
   defaultValue,
-  formData,
+  newFormData,
   disabled,
   onClick,
   label,
@@ -74,10 +72,6 @@ function Input({
     return inputStyle;
   }
 
-  const newFormData = formatFormData(formData);
-
-  const newFormErros = formatErrorObject(errors);
-
   return (
     <div className="flex flex-col gap-2 ">
       {label && (
@@ -98,7 +92,7 @@ function Input({
         name={name}
         {...register(name, validtionInputs)}
       />
-      {newFormErros[name] && (
+      {newFormErros && newFormErros[name] && (
         <ErrorMessage>{newFormErros[name]?.message}</ErrorMessage>
       )}
     </div>
