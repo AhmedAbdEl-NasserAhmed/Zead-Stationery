@@ -69,8 +69,6 @@ function AddPurchaseForm({ setShowModal }: Props) {
 
   const newFormErros = formatErrorObject(errors, "sellerName");
 
-  console.log("FormData", newFormData);
-
   useEffect(() => {
     setCurrentRowId(inputRow[inputRow.length - 1]);
   }, [inputRow]);
@@ -148,8 +146,6 @@ function AddPurchaseForm({ setShowModal }: Props) {
     setInputRow((data) => data.filter((row) => row !== rowID));
   }
 
-  console.log("FormData", formData);
-
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={styles["purchase-form"]}>
       <div id="formContainer" className={styles["purchase-form__container"]}>
@@ -171,18 +167,21 @@ function AddPurchaseForm({ setShowModal }: Props) {
               <div className="flex flex-col gap-5">
                 <h2 className="text-4xl">Seller Name</h2>
                 <Input
+                  disabled={response.isLoading}
+                  style={{ width: `${100}%` }}
                   newFormData={newFormData}
-                  newFormErros={newFormErros}
-                  register={register}
+                  emptyClass={formData?.["sellerName"] === "" ? "empty" : ""}
+                  inputError={newFormErros["sellerName"]}
+                  register={{
+                    ...register("sellerName", {
+                      required: {
+                        value: true,
+                        message: "This field is required",
+                      },
+                    }),
+                  }}
                   placeholder="Seller Name"
                   type="text"
-                  name="sellerName"
-                  validtionInputs={{
-                    required: {
-                      value: true,
-                      message: "This field is required",
-                    },
-                  }}
                 />
               </div>
               <h2 className="text-[2.5rem] font-bold text-purple-600">
@@ -213,17 +212,25 @@ function AddPurchaseForm({ setShowModal }: Props) {
                   />
 
                   {purchaseFormInputs(rowId, rowIdsArray).map((input) => {
+                    const inputValidationName = input.name.substring(6);
+
                     return (
                       <Input
                         key={input.name}
-                        newFormData={newFormData}
-                        name={input.name}
+                        style={{ width: `${100}%` }}
+                        emptyClass={
+                          formData?.[currentRowId]?.[inputValidationName] === ""
+                            ? "empty"
+                            : ""
+                        }
                         type={input.type}
-                        disabled={input.disabled}
-                        newFormErros={newFormErros}
-                        register={register}
+                        disabled={input.disabled || response.isLoading}
+                        disabledClass={input.disabled ? "bg-slate-200" : ""}
+                        register={{
+                          ...register(input.name, input.validationInputs),
+                        }}
+                        inputError={newFormErros[input.name]}
                         placeholder={input.placeholder}
-                        validtionInputs={input.validationInputs}
                       />
                     );
                   })}

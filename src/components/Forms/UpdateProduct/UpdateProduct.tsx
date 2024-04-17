@@ -183,18 +183,18 @@ function UpdateProduct({ product, setShowModal, extraElementProps }: Props) {
           {updateFormInputs(product.id, product).map((input) => {
             return (
               <Input
+                style={{ width: `${100}%` }}
                 key={input.name}
                 defaultValue={input.defaultValue}
                 newFormData={newFormData}
-                newFormErros={newFormErros}
+                inputError={newFormErros[input.name]}
                 disabled={
                   input.disabled || extraElementProps.response.isLoading
                 }
-                register={register}
+                disabledClass={input.disabled ? "bg-slate-200" : ""}
+                register={{ ...register(input.name, input.validationInputs) }}
                 type={input.type}
-                name={input.name}
                 placeholder={input.placeholder}
-                validtionInputs={input.validationInputs}
               />
             );
           })}

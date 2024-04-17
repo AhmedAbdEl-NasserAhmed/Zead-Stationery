@@ -10,6 +10,7 @@ import { useGetCapitalDataQuery } from "./services/capitalApi";
 import { useDispatch } from "react-redux";
 import { assingAmount } from "./store/slices/currentCapitalSlice";
 import { useEffect } from "react";
+import MissingGoodsPage from "./pages/MissingGoodsPage/MissingGoodsPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -49,6 +50,10 @@ function App() {
         {
           path: "/bills",
           element: <BillsPage />,
+        },
+        {
+          path: "/missing",
+          element: <MissingGoodsPage />,
         },
       ],
     },

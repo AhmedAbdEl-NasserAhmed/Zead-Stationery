@@ -215,18 +215,19 @@ function AddBillForm({ setShowModal }: Props) {
             <div className="flex flex-col gap-5">
               <h2 className="text-4xl">Buyer Name</h2>
               <Input
-                newFormData={newFormData}
-                newFormErros={newFormErros}
-                register={register}
+                style={{ width: `${100}%` }}
+                emptyClass={formData?.["buyerName"] === "" ? "empty" : ""}
+                inputError={newFormErros["buyerName"]}
+                register={{
+                  ...register("buyerName", {
+                    required: {
+                      value: true,
+                      message: "This field is required",
+                    },
+                  }),
+                }}
                 placeholder="Buyer Name"
                 type="text"
-                name="buyerName"
-                validtionInputs={{
-                  required: {
-                    value: true,
-                    message: "This field is required",
-                  },
-                }}
               />
             </div>
             <h2 className="text-[2.5rem] font-bold text-purple-600">
@@ -267,20 +268,28 @@ function AddBillForm({ setShowModal }: Props) {
                   setSelectedBillProductQuantity,
                   setCurrentRowId
                 ).map((input) => {
+                  const inputValidationName = input.name.substring(6);
+
                   return (
                     <Input
+                      style={{ width: `${100}%` }}
                       label={input.label}
                       onClick={input.onClick}
                       defaultValue={input.defaultValue}
                       key={input.name}
-                      newFormData={newFormData}
-                      name={input.name}
+                      emptyClass={
+                        formData?.[rowId]?.[inputValidationName] === ""
+                          ? "empty"
+                          : ""
+                      }
                       type={input.type}
+                      disabledClass={input.disabled ? "bg-slate-200" : ""}
                       disabled={input.disabled || response.isLoading}
-                      newFormErros={newFormErros}
-                      register={register}
+                      inputError={newFormErros[input.name]}
+                      register={{
+                        ...register(input.name, input.validationInputs),
+                      }}
                       placeholder={input.placeholder}
-                      validtionInputs={input.validationInputs}
                     />
                   );
                 })}

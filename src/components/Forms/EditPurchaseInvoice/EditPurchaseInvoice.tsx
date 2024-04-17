@@ -137,17 +137,18 @@ function EditPurchaseInvoice({ optionElementProps, setShowModal }: Props) {
               {updatePurchaseInputs(product, product.id).map((input) => {
                 return (
                   <Input
+                    style={{ width: `${100}%` }}
                     label={input.label}
                     defaultValue={input.defaultValue}
                     key={input.name}
                     newFormData={newFormData}
-                    name={input.name}
                     type={input.type}
-                    disabled={input.disabled}
-                    newFormErros={newFormErros}
-                    register={register}
+                    disabled={input.disabled || response.isLoading}
+                    inputError={newFormErros[input.name]}
+                    register={{
+                      ...register(input.name, input.validationInputs),
+                    }}
                     placeholder={input.placeholder}
-                    validtionInputs={input.validationInputs}
                   />
                 );
               })}

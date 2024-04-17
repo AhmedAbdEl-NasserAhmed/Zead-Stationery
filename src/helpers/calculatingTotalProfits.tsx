@@ -1,24 +1,3 @@
-// function calculatingTotalProfits(formData: object) {
-//   const totalProfits = Object.values(formData)
-//     .map((profit: number) => {
-//
-//       if (!profit["totalPrice"]) {
-//         return (profit["totalPrice"] = 0);
-//       } else {
-//         return +profit["totalPrice"];
-//       }
-//     })
-//     .reduce((acc, profit) => {
-//       return acc + profit;
-//     }, 0);
-
-//   console.log("totalProfits", totalProfits);
-
-//   return totalProfits;
-// }
-
-// export default calculatingTotalProfits;
-
 function calculatingTotalProfits(formData: object) {
   const totalProfits = Object.keys(formData)
     .map((key: string) => {
@@ -37,8 +16,6 @@ function calculatingTotalProfits(formData: object) {
         return acc + profit;
       }
     }, 0);
-
-  // console.log("totalProfits", totalProfits);
 
   return totalProfits;
 }

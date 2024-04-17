@@ -44,15 +44,17 @@ function RefundBillInvoice({ optionElementProps, setShowModal }: Props) {
               {refundBillInvoiceInputs(product).map((input) => {
                 return (
                   <Input
+                    style={{ width: `${100}%` }}
                     key={input.id}
                     label={input.label}
                     defaultValue={input.defaultValue}
                     newFormData={newFormData}
-                    name={input.name}
                     type={input.type}
                     disabled={input.disabled}
-                    newFormErros={newFormErros}
-                    register={register}
+                    inputError={newFormErros[input.name]}
+                    register={{
+                      ...register(input.name),
+                    }}
                     placeholder={input.placeholder}
                   />
                 );
