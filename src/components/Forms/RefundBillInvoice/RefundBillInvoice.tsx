@@ -40,7 +40,7 @@ function RefundBillInvoice({ optionElementProps, setShowModal }: Props) {
       <div className={styles["refund-bill__row-input"]}>
         {optionElementProps?.products?.map((product: ProductObject) => {
           return (
-            <div key={product.id} className="flex gap-10 ">
+            <div key={product.id} className="flex justify-evenly gap-10  ">
               {refundBillInvoiceInputs(product).map((input) => {
                 return (
                   <Input
@@ -49,6 +49,7 @@ function RefundBillInvoice({ optionElementProps, setShowModal }: Props) {
                     label={input.label}
                     defaultValue={input.defaultValue}
                     newFormData={newFormData}
+                    disabledClass={input.disabled ? "bg-slate-200" : ""}
                     type={input.type}
                     disabled={input.disabled}
                     inputError={newFormErros[input.name]}
