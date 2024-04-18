@@ -4,6 +4,8 @@ import { ProductObject } from "../interfaces/productObject";
 import { updatedPropertiesFactory } from "../helpers/updatedPropertiesFactory";
 
 async function useUpdateExistedProduct({ productsData, id }) {
+  console.log("productsData", productsData);
+
   const docRef = doc(db, "goods", id);
 
   const docSnap = await getDoc(docRef);
@@ -11,6 +13,8 @@ async function useUpdateExistedProduct({ productsData, id }) {
   if (!docSnap) return;
 
   const isAlreadyExisted: ProductObject = docSnap.data();
+
+  console.log("isAlreadyExisted", isAlreadyExisted);
 
   if (!isAlreadyExisted || !docRef) return;
 

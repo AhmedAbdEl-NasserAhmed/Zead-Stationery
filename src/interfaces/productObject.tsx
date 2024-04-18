@@ -2,6 +2,7 @@ export interface ProductObject {
   id?: string;
   name?: string;
   type?: string;
+  existedProductId?: string;
 
   quantity?: number;
   piecesCount?: number;

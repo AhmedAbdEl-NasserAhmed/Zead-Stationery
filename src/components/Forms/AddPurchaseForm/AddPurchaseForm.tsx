@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import styles from "./AddPurchaseFormCopy.module.scss";
+import styles from "./AddPurchaseForm.module.scss";
 
 import { useEffect, useState } from "react";
 import Button from "../../../ui/Button/Button";
@@ -53,13 +53,14 @@ function AddPurchaseFormCopy({ setShowModal }: Props) {
   const [selectedProduct, setSelectedProduct] = useState<ProductObject>({
     name: "",
     type: "",
+    id: "",
   });
+
+  const [currentRowId, setCurrentRowId] = useState<string>();
 
   const [updateGoods, response] = useUpdateGoodsDataMutation();
 
   const { data } = useGetGoodsDataQuery("goods");
-
-  // const [updateExistedProduct] = useUseUpdateExistedProductMutation();
 
   const [setNewPurchases] = useSetNewPurchasesDataMutation();
 
@@ -69,11 +70,7 @@ function AddPurchaseFormCopy({ setShowModal }: Props) {
 
   const [currentBalance, setCurrentBalance] = useState<number>(amount);
 
-  const [currentRowId, setCurrentRowId] = useState<string>();
-
   const [filtredData, setFiltredData] = useState<ProductObject[]>([]);
-
-  // const newFormData = formatFormData(formData, "sellerName");
 
   const newFormData = formatFormData(formData, "sellerName");
 
@@ -102,7 +99,7 @@ function AddPurchaseFormCopy({ setShowModal }: Props) {
   useEffect(() => {
     setFiltredData(
       data?.filter((product: ProductObject) =>
-        product.name
+        product?.name
           .toLocaleLowerCase()
           .includes(String(inputData).toLocaleLowerCase())
       )
@@ -113,7 +110,9 @@ function AddPurchaseFormCopy({ setShowModal }: Props) {
     addingClasses("empty", "not-finished");
 
     for (const item in newFormData) {
-      if (newFormData[item] === "" || currentBalance < 0) return;
+      if (item !== "product-existedProductId") {
+        if (newFormData[item] === "" || currentBalance < 0) return;
+      }
     }
 
     setInputRow((data) => [...data, crypto.randomUUID().substring(0, 5)]);
@@ -128,9 +127,11 @@ function AddPurchaseFormCopy({ setShowModal }: Props) {
         const modiefiedObject = {};
 
         for (const key in product) {
-          const newKey = key.split("-");
-          const parts = newKey[1];
-          modiefiedObject[parts] = product[key];
+          if (product[key]) {
+            const newKey = key.split("-");
+            const parts = newKey[1];
+            modiefiedObject[parts] = product[key];
+          }
         }
 
         return {
@@ -138,6 +139,8 @@ function AddPurchaseFormCopy({ setShowModal }: Props) {
           ...modiefiedObject,
         };
       });
+
+    console.log("serverData", serverData);
 
     serverData.forEach((product: ProductObject) => {
       updateGoods(product);
@@ -162,6 +165,8 @@ function AddPurchaseFormCopy({ setShowModal }: Props) {
 
     setShowModal();
   }
+
+  // console.log("formData", formData);
 
   function deleteRow(rowID: string) {
     if (inputRow.length === 1) return;
@@ -248,9 +253,7 @@ function AddPurchaseFormCopy({ setShowModal }: Props) {
                     name={`${rowId}.product-name`}
                     type="text"
                     emptyClassName={
-                      newFormData[`${rowId}.product-name`.substring(6)] === ""
-                        ? "empty"
-                        : ""
+                      formData?.[rowId]?.["product-name"] === "" ? "empty" : ""
                     }
                     onClick={(closeFc) =>
                       smartSearchInputOnClick(rowId, closeFc)
@@ -267,6 +270,8 @@ function AddPurchaseFormCopy({ setShowModal }: Props) {
                     settersValue={{
                       [`${currentRowId}.product-name`]: selectedProduct.name,
                       [`${currentRowId}.product-type`]: selectedProduct.type,
+                      [`${currentRowId}.product-existedProductId`]:
+                        selectedProduct.id,
                     }}
                     OptionElement={ClearInputsData}
                     optionElementProps={clearInputsDataClick}
@@ -286,7 +291,7 @@ function AddPurchaseFormCopy({ setShowModal }: Props) {
                         key={input.name}
                         style={{ width: `${100}%` }}
                         emptyClass={
-                          formData?.[currentRowId]?.[inputValidationName] === ""
+                          formData?.[rowId]?.[inputValidationName] === ""
                             ? "empty"
                             : ""
                         }

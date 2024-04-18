@@ -37,8 +37,6 @@ function UpdateCapitalForm({ setShowModal }: Props) {
 
   const dispatch = useAppDispatch();
 
-  console.log(formData);
-
   function onSubmit() {
     updateCapital({
       data: {
@@ -72,23 +70,24 @@ function UpdateCapitalForm({ setShowModal }: Props) {
 
       <div>
         <Input
-          formData={formData}
+          style={{ width: `${100}%` }}
           defaultValue={0}
-          errors={errors}
-          register={register}
+          register={{
+            ...register(`${rowId}.capital`, {
+              required: {
+                value: true,
+                message: "This field is required",
+              },
+              min: {
+                value: 1,
+                message: "You Have to Raise your Capital By at least 1 EGP",
+              },
+            }),
+          }}
+          inputError={errors[rowId]?.["capital"]}
           placeholder="💲 Capital"
           type="number"
           name={`${rowId}.capital`}
-          validtionInputs={{
-            required: {
-              value: true,
-              message: "This field is required",
-            },
-            min: {
-              value: 1,
-              message: "You Have to Raise your Capital By at least 1 EGP",
-            },
-          }}
         />
       </div>
       <div className="flex self-start gap-10">

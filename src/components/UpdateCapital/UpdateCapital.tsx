@@ -11,8 +11,6 @@ function UpdateCapital() {
 
   if (isLoading) return <Spinner />;
 
-  console.log("Amount", amount);
-
   return (
     <div className="flex flex-col justify-between gap-[10rem] ">
       <div className="flex justify-between items-center bg-purple-600 p-10 ">

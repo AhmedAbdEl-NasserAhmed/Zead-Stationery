@@ -72,5 +72,11 @@ export const purchaseFormInputs = function (
         },
       },
     },
+    {
+      name: `${rowId}.product-existedProductId`,
+      type: "text",
+      disabled: true,
+      placeholder: "Existed Product Id",
+    },
   ];
 };

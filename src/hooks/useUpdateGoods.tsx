@@ -3,7 +3,11 @@ import { db } from "../firebase/firebase";
 import { ProductObject } from "../interfaces/productObject";
 
 async function useUpdateGoods(productsData: ProductObject) {
-  const docRef = doc(db, "goods", productsData.id);
+  const identifer = productsData?.existedProductId
+    ? productsData?.existedProductId
+    : productsData?.id;
+
+  const docRef = doc(db, "goods", identifer);
 
   const docSnap = await getDoc(docRef);
 
@@ -14,6 +18,8 @@ async function useUpdateGoods(productsData: ProductObject) {
       });
 
       return { data: productsData };
+    } else {
+      return { data: "Ok" };
     }
   } catch (err) {
     console.error(err.message);
