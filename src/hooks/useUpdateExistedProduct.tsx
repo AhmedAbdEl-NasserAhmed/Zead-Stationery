@@ -4,17 +4,17 @@ import { ProductObject } from "../interfaces/productObject";
 import { updatedPropertiesFactory } from "../helpers/updatedPropertiesFactory";
 
 async function useUpdateExistedProduct({ productsData, id }) {
-  console.log("productsData", productsData);
+  const indentifier = productsData.existedProductId
+    ? productsData.existedProductId
+    : id;
 
-  const docRef = doc(db, "goods", id);
+  const docRef = doc(db, "goods", indentifier);
 
   const docSnap = await getDoc(docRef);
 
   if (!docSnap) return;
 
   const isAlreadyExisted: ProductObject = docSnap.data();
-
-  console.log("isAlreadyExisted", isAlreadyExisted);
 
   if (!isAlreadyExisted || !docRef) return;
 
@@ -26,11 +26,12 @@ async function useUpdateExistedProduct({ productsData, id }) {
   );
 
   try {
-    await updateDoc(updatedObjectRef, {
-      ...updatedObjectData,
-    });
-
-    return { data: "ok" };
+    if (isAlreadyExisted) {
+      await updateDoc(updatedObjectRef, {
+        ...updatedObjectData,
+      });
+      return { data: "ok" };
+    }
   } catch (err) {
     console.error(err.message);
   }

@@ -19,7 +19,7 @@ async function useUpdateGoods(productsData: ProductObject) {
 
       return { data: productsData };
     } else {
-      return { data: "Ok" };
+      return { data: null };
     }
   } catch (err) {
     console.error(err.message);

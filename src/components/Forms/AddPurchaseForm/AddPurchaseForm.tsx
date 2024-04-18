@@ -8,6 +8,7 @@ import { HiCheckCircle, HiOutlineTrash } from "react-icons/hi";
 import {
   useGetGoodsDataQuery,
   useUpdateGoodsDataMutation,
+  useUseUpdateExistedProductMutation,
 } from "../../../services/goodsApi";
 import { useSetNewPurchasesDataMutation } from "../../../services/purchasesApi";
 import Input from "../../../ui/Input/Input";
@@ -59,6 +60,8 @@ function AddPurchaseFormCopy({ setShowModal }: Props) {
   const [currentRowId, setCurrentRowId] = useState<string>();
 
   const [updateGoods, response] = useUpdateGoodsDataMutation();
+
+  const [updateExistedProduct] = useUseUpdateExistedProductMutation();
 
   const { data } = useGetGoodsDataQuery("goods");
 
@@ -134,17 +137,19 @@ function AddPurchaseFormCopy({ setShowModal }: Props) {
           }
         }
 
+        const idConditions = product["product-existedProductId"]
+          ? product["product-existedProductId"]
+          : crypto.randomUUID().substring(0, 5);
+
         return {
-          id: crypto.randomUUID().substring(0, 5),
+          id: idConditions,
           ...modiefiedObject,
         };
       });
 
-    console.log("serverData", serverData);
-
     serverData.forEach((product: ProductObject) => {
       updateGoods(product);
-      // updateExistedProduct({ productsData: product, id: product.id });
+      updateExistedProduct({ productsData: product, id: product.id });
     });
 
     setNewPurchases({

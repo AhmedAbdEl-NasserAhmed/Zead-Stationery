@@ -131,7 +131,6 @@ function EditPurchaseInvoice({ optionElementProps, setShowModal }: Props) {
 
       <div className={styles["edit-purchase__row-input"]}>
         {optionElementProps?.products?.map((product: ProductObject) => {
-          console.log("product", product);
           return (
             <div key={product.id} className="flex gap-10 ">
               {updatePurchaseInputs(product, product.id).map((input) => {
