@@ -1,16 +1,16 @@
 .clear-inputs {
-    position: absolute;
-    top: 15px;
-    right: 8px;
-    width: 1.5rem;
-    height: 1.5rem;
-    font-size: 0.95rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50px;
-    cursor: pointer;
-    background-color: var(--color-purple-20);
-    padding: 0.3rem;
-    color: var(--color-white);
-  }
+  position: absolute;
+  // top: 25px;
+  // right: 8px;
+  width: 1.5rem;
+  height: 1.5rem;
+  font-size: 0.95rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50px;
+  cursor: pointer;
+  background-color: var(--color-purple-20);
+  padding: 0.3rem;
+  color: var(--color-white);
+}

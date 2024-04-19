@@ -11,14 +11,18 @@ import { useAppSelector } from "../../../interfaces/hooks";
 import calculatingTotalProfits from "../../../helpers/calculatingTotalProfits";
 import addingClasses from "../../../helpers/addingClasses";
 import { formatFormData } from "../../../helpers/formatFormData";
-import SearchAddBillProductsInput from "../../SearchAddBillProductsInput/SearchAddBillProductsInput";
 import { useDispatch } from "react-redux";
 import { assingAmount } from "../../../store/slices/currentCapitalSlice";
 import { useUpdateCapitalDataMutation } from "../../../services/capitalApi";
-import { useUseUpdateExistedProductMutation } from "../../../services/goodsApi";
+import {
+  useGetGoodsDataQuery,
+  useUseUpdateExistedProductMutation,
+} from "../../../services/goodsApi";
 import { useSetNewBillMutation } from "../../../services/billsAPi";
 import { formatErrorObject } from "../../../helpers/formatErrorObject";
 import { modifyingFormDataBillInputs } from "../../../helpers/modifyingFormDataBillInputs";
+import ClearInputsData from "../../ClearInputsData/ClearInputsData";
+import SmartSearchInput from "../../SmartSearchInput/SmartSearchInput";
 
 interface Props {
   setShowModal?: () => void;
@@ -54,6 +58,8 @@ function AddBillForm({ setShowModal }: Props) {
     crypto.randomUUID().substring(0, 5),
   ]);
 
+  const { data } = useGetGoodsDataQuery("goods");
+
   const [rowIdsArray, setRowIdsArray] = useState<string[]>([]);
 
   const [currentBalance, setCurrentBalance] = useState<number>(amount);
@@ -75,11 +81,36 @@ function AddBillForm({ setShowModal }: Props) {
 
   const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
 
+  const [filtredData, setFiltredData] = useState<ProductObject[]>([]);
+
   const [setNewBill, response] = useSetNewBillMutation();
+
+  const position = {
+    top: `${38}px`,
+    right: `${8}px`,
+  };
 
   const newFormData = formatFormData(formData, "buyerName");
 
   const newFormErros = formatErrorObject(errors, "buyerName");
+
+  const inputData = newFormData ? newFormData["product-name"] : undefined;
+
+  console.log("Form Data", formData);
+
+  useEffect(() => {
+    setFiltredData(
+      data?.filter((product: ProductObject) => {
+        if (!selectedProducts.includes(product.name))
+          return (
+            +product.piecesCount * +product.piecesPrice > 0 &&
+            product.name
+              .toLocaleLowerCase()
+              .includes(String(inputData).toLocaleLowerCase())
+          );
+      })
+    );
+  }, [data, inputData, selectedProducts]);
 
   useEffect(() => {
     setCurrentRowId(inputRows[inputRows.length - 1]);
@@ -166,6 +197,7 @@ function AddBillForm({ setShowModal }: Props) {
 
     serverData.forEach((product) => {
       updateExistedProduct({
+        invoiceType: "sell",
         productsData: product,
         id: product.id,
       });
@@ -191,6 +223,46 @@ function AddBillForm({ setShowModal }: Props) {
     reset();
 
     setShowModal();
+  }
+
+  function smartSearchInputOnClick(rowId: string, closeFc) {
+    setCurrentRowId(rowId);
+    closeFc(true);
+  }
+
+  function clearInputsDataClick(rowId: string) {
+    const productNameReference = formData[rowId]["product-name"];
+
+    setRowIdsArray((data: string[]) => data.filter((id) => id !== rowId));
+
+    setSelectedProducts((data: string[]) =>
+      data.filter((productName) => productName !== productNameReference)
+    );
+
+    for (const objectkey in formData[rowId]) {
+      setValue(`${rowId}${[`.${objectkey}`]}`, "");
+    }
+
+    setSelectedBillProductQuantity(0);
+  }
+
+  function closeSearchMenu(closeFc) {
+    clearErrors(`${currentRowId}.product-name`);
+
+    setTimeout(() => {
+      closeFc(false);
+      setSelectedBillProduct({
+        name: "",
+        type: "",
+        singleCount: 0,
+        piecesCount: 0,
+        singlePrice: 0,
+      });
+    }, 1);
+  }
+
+  function addRowId() {
+    setRowIdsArray((data) => [...data, currentRowId]);
   }
 
   // console.log("Form Data", formData);
@@ -240,27 +312,69 @@ function AddBillForm({ setShowModal }: Props) {
           {inputRows.map((rowId) => {
             return (
               <div className={styles["bill-form__input-row"]} key={rowId}>
-                <SearchAddBillProductsInput
-                  label="Product Name"
-                  setSelectedBillProductQuantity={
-                    setSelectedBillProductQuantity
-                  }
-                  setSelectedProducts={setSelectedProducts}
-                  selectedProducts={selectedProducts}
-                  clearErrors={clearErrors}
-                  disabled={rowIdsArray.includes(rowId)}
-                  rowId={rowId}
-                  setValue={setValue}
-                  errors={errors}
-                  register={register}
-                  formData={formData}
-                  name={`${rowId}.product-name`}
-                  setRowIdsArray={setRowIdsArray}
-                  selectedProduct={selectedBillProduct}
-                  setSelectedProduct={setSelectedBillProduct}
-                  currentRowId={currentRowId}
-                  setCurrentRowId={setCurrentRowId}
-                />
+                {
+                  <SmartSearchInput
+                    filtredData={filtredData}
+                    placeholder="Prodcut Name"
+                    label="Product Name"
+                    name={`${rowId}.product-name`}
+                    onClick={(closeFc) =>
+                      smartSearchInputOnClick(rowId, closeFc)
+                    }
+                    emptyClassName={
+                      formData?.[rowId]?.["product-name"] === "" ? "empty" : ""
+                    }
+                    type="text"
+                    setValue={setValue}
+                    disabledClass={"bg-slate-200"}
+                    register={register}
+                    disabled={rowIdsArray.includes(rowId)}
+                    inputData={inputData}
+                    setBillProductQuantity={() =>
+                      setSelectedBillProductQuantity(
+                        +selectedBillProduct.piecesCount *
+                          +selectedBillProduct.singleCount
+                      )
+                    }
+                    onClickItem={(
+                      item: {
+                        name: string;
+                      },
+                      closeFc
+                    ) => {
+                      addRowId();
+                      closeSearchMenu(closeFc);
+                      setSelectedBillProduct(item);
+                      setSelectedProducts((data) => [...data, item.name]);
+                    }}
+                    newFormErros={newFormErros}
+                    settersValue={{
+                      [`${currentRowId}.product-name`]:
+                        selectedBillProduct.name,
+
+                      [`${currentRowId}.id`]: selectedBillProduct.id,
+
+                      [`${currentRowId}.soldPieces`]:
+                        selectedBillProduct.soldPieces,
+
+                      [`${currentRowId}.singleCount`]:
+                        selectedBillProduct.singleCount,
+
+                      [`${currentRowId}.piecesCount`]:
+                        selectedBillProduct.piecesCount,
+
+                      [`${currentRowId}.singlePrice`]:
+                        selectedBillProduct.singlePrice,
+                    }}
+                    OptionElement={ClearInputsData}
+                    optionElementProps={{
+                      clearInputsDataClick,
+                      rowId,
+                      position,
+                    }}
+                    selectedItem={selectedBillProduct}
+                  />
+                }
 
                 {billFormInputs(
                   rowId,

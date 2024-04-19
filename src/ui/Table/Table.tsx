@@ -14,6 +14,7 @@ interface Props {
       isLoading: boolean;
     };
   };
+  extraElementKey?: string;
 }
 
 function Table({
@@ -22,6 +23,7 @@ function Table({
   data,
   ExtraElement,
   extraElementProps,
+  extraElementKey,
 }: Props) {
   return (
     <div>
@@ -32,6 +34,7 @@ function Table({
         </thead>
         <tbody>
           <TableRow
+            extraElementKey={extraElementKey}
             extraElementProps={extraElementProps}
             ExtraElement={ExtraElement}
             headers={headers}

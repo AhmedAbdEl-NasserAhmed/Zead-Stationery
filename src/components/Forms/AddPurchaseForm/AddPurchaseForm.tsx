@@ -27,7 +27,7 @@ interface Props {
   setShowModal?: () => void;
 }
 
-function AddPurchaseFormCopy({ setShowModal }: Props) {
+function AddPurchaseForm({ setShowModal }: Props) {
   const {
     register,
     watch,
@@ -70,6 +70,11 @@ function AddPurchaseFormCopy({ setShowModal }: Props) {
   const [updateCapital] = useUpdateCapitalDataMutation();
 
   const [expense, setExpense] = useState<number>(0);
+
+  const position = {
+    top: `${15}px`,
+    right: `${10}px`,
+  };
 
   const [currentBalance, setCurrentBalance] = useState<number>(amount);
 
@@ -149,7 +154,11 @@ function AddPurchaseFormCopy({ setShowModal }: Props) {
 
     serverData.forEach((product: ProductObject) => {
       updateGoods(product);
-      updateExistedProduct({ productsData: product, id: product.id });
+      updateExistedProduct({
+        invoiceType: "update",
+        productsData: product,
+        id: product.id,
+      });
     });
 
     setNewPurchases({
@@ -178,8 +187,8 @@ function AddPurchaseFormCopy({ setShowModal }: Props) {
     setInputRow((data) => data.filter((row) => row !== rowID));
   }
 
-  function smartSearchInputOnClick(rowId: string, setShowExistedListItems) {
-    setShowExistedListItems(true);
+  function smartSearchInputOnClick(rowId: string, closeFc) {
+    closeFc(true);
     setCurrentRowId(rowId);
   }
 
@@ -194,9 +203,10 @@ function AddPurchaseFormCopy({ setShowModal }: Props) {
   function closeSearchListMenu(setShowExistedListItems) {
     clearErrors(`${currentRowId}.product-type`);
     clearErrors(`${currentRowId}.product-name`);
+
     setTimeout(() => {
-      setShowExistedListItems(false);
       setSelectedProduct({ name: "", type: "" });
+      setShowExistedListItems(false);
     }, 1);
   }
 
@@ -254,6 +264,7 @@ function AddPurchaseFormCopy({ setShowModal }: Props) {
               return (
                 <div key={rowId} className={styles["purchase-form__input-row"]}>
                   <SmartSearchInput
+                    label=""
                     filtredData={filtredData}
                     name={`${rowId}.product-name`}
                     type="text"
@@ -268,9 +279,7 @@ function AddPurchaseFormCopy({ setShowModal }: Props) {
                       closeSearchListMenu(closeFc);
                       setSelectedProduct(item);
                     }}
-                    rowId={rowId}
-                    selecteditem={selectedProduct}
-                    // closeMenuFc={setShowExistedListItems}
+                    selectedItem={selectedProduct}
                     inputData={inputData}
                     settersValue={{
                       [`${currentRowId}.product-name`]: selectedProduct.name,
@@ -279,7 +288,11 @@ function AddPurchaseFormCopy({ setShowModal }: Props) {
                         selectedProduct.id,
                     }}
                     OptionElement={ClearInputsData}
-                    optionElementProps={clearInputsDataClick}
+                    optionElementProps={{
+                      clearInputsDataClick,
+                      position,
+                      rowId,
+                    }}
                     setValue={setValue}
                     newFormErros={newFormErros}
                     register={register}
@@ -366,4 +379,4 @@ function AddPurchaseFormCopy({ setShowModal }: Props) {
   );
 }
 
-export default AddPurchaseFormCopy;
+export default AddPurchaseForm;

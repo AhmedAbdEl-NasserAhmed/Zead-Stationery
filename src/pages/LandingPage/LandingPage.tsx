@@ -1,15 +1,18 @@
 import currentDate from "../../helpers/currentDate";
 import styles from "./LandingPage.module.scss";
-import { Link } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../interfaces/hooks";
-import { move } from "../../store/slices/sliderSlice";
+import LocationNav from "../../ui/LocationNav/LocationNav";
+import LocationLink from "../../ui/Link/LocationLink";
+import { HiBell } from "react-icons/hi";
+import { useState } from "react";
 
 function LandingPage() {
   const date = currentDate();
 
-  const slideBar = useAppSelector((state) => state.slider);
-
-  const dispatch = useAppDispatch();
+  const [position, setPosition] = useState({
+    right: 0,
+    left: 0,
+    width: 20,
+  });
 
   function handler(e) {
     const id = e.target.id;
@@ -18,15 +21,20 @@ function LandingPage() {
 
     const rec = element.getBoundingClientRect();
 
-    dispatch(move(rec.right, rec.left, rec.width));
+    setPosition({ right: rec.right, left: rec.left, width: rec.width });
   }
 
   return (
     <div>
-      <div>
-        <Link to="/stock">Go To Store</Link>
-        <h2 className="text-6xl">Today: {date}</h2>
-      </div>
+      <LocationNav
+        Element={LocationLink}
+        elementProps={{
+          location: "/stock",
+          name: "Go to the Store",
+          icon: <HiBell />,
+        }}
+      />
+      <h2 className="text-5xl">Today: {date}</h2>
       <ul id="links-container" className=" relative flex justify-between">
         <li id="link-1" onClick={handler}>
           goods
@@ -42,9 +50,9 @@ function LandingPage() {
         </li>
         <span
           style={{
-            width: slideBar.width,
-            left: slideBar.left,
-            right: slideBar.right,
+            width: position.width,
+            left: position.left,
+            right: position.right,
           }}
           className={styles["slider"]}
         ></span>

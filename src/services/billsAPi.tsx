@@ -1,6 +1,7 @@
 import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
 import { useGetBills } from "../hooks/useGetBills";
 import useSetNewBill from "../hooks/useSetNewBill";
+import useUpdateBillInvoice from "../hooks/useUpdateBill";
 
 export const billsApi = createApi({
   reducerPath: "billApi",
@@ -15,7 +16,15 @@ export const billsApi = createApi({
       queryFn: useSetNewBill,
       invalidatesTags: ["bills"],
     }),
+    updateBillInvoice: builder.mutation({
+      queryFn: useUpdateBillInvoice,
+      invalidatesTags: ["bills"],
+    }),
   }),
 });
 
-export const { useGetBillslDataQuery, useSetNewBillMutation } = billsApi;
+export const {
+  useGetBillslDataQuery,
+  useSetNewBillMutation,
+  useUpdateBillInvoiceMutation,
+} = billsApi;

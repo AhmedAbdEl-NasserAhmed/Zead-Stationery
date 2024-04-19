@@ -35,10 +35,6 @@
           transition: 0.3s all;
         }
 
-        &.active {
-          background-color: red;
-        }
-
         &:hover,
         &.active:visited,
         &.active:link {
@@ -58,6 +54,9 @@
           color: var(--color-white);
         }
       }
+      a.active {
+        background-color: red;
+      }
     }
 
     &-back {
@@ -76,13 +75,5 @@
         transition: all 0.3s;
       }
     }
-  }
-
-  &__location {
-    display: flex;
-    justify-content: space-between;
-    padding: 1.5rem 2rem;
-    background-color: var(--color-white);
-    font-size: 1.6rem;
   }
 }

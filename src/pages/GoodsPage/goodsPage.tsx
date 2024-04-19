@@ -20,6 +20,7 @@ function GoodsPage() {
     <div className={styles["goods-page"]}>
       <Menus>
         <Table
+          extraElementKey="Actions"
           title={"Goods"}
           data={data}
           headers={goodsTableContent}

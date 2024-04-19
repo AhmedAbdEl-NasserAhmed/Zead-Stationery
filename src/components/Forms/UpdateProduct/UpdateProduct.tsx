@@ -17,7 +17,7 @@ interface Props {
   product: ProductObject;
   setShowModal?: () => void;
   extraElementProps: {
-    updateExistedProduct?: ({ productsData, id }) => void;
+    updateExistedProduct?: ({ invoiceType, productsData, id }) => void;
     response?: {
       isLoading: boolean;
     };
@@ -94,6 +94,7 @@ function UpdateProduct({ product, setShowModal, extraElementProps }: Props) {
 
     serverData.forEach((itemProduct) => {
       extraElementProps.updateExistedProduct({
+        invoiceType: "update",
         productsData: itemProduct,
         id: product.id,
       });

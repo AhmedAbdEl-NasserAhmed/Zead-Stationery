@@ -1,4 +1,10 @@
-function TableRow({ data, headers, ExtraElement, extraElementProps }) {
+function TableRow({
+  data,
+  headers,
+  ExtraElement,
+  extraElementProps,
+  extraElementKey,
+}) {
   return (
     <>
       {data?.map((item, index) => {
@@ -8,7 +14,7 @@ function TableRow({ data, headers, ExtraElement, extraElementProps }) {
               return (
                 <th key={index}>
                   {item[header.serverKey] || header.value}
-                  {header.name === "Actions" && ExtraElement ? (
+                  {header.name === extraElementKey && ExtraElement ? (
                     <ExtraElement
                       extraElementProps={extraElementProps}
                       product={item}

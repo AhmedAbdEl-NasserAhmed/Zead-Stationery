@@ -6,10 +6,11 @@ import useClickoutSide from "../../../hooks/useClickoutSide";
 function ExistedItemsData({
   closeMenuFc,
   filtredData,
-  selecteditem,
+  selectedItem,
   setValue,
   settersValue,
   onClickItem,
+  setBillProductQuantity,
 }) {
   const ref = useClickoutSide({
     closeFc: closeMenuFc,
@@ -25,11 +26,15 @@ function ExistedItemsData({
   }, [filtredData.length, closeMenuFc]);
 
   useEffect(() => {
+    if (setBillProductQuantity) {
+      setBillProductQuantity();
+    }
+
     for (const key in settersValue) {
       setValue(key, settersValue[key]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [setValue, selecteditem]);
+  }, [setValue, selectedItem]);
 
   return (
     <div className={styles["existed-products"]} ref={ref}>

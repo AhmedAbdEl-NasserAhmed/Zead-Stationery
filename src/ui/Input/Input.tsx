@@ -23,6 +23,7 @@ interface InputProps {
   disabled?: boolean;
   defaultValue?: number | string;
   placeholder?: string;
+  value?: string;
 }
 
 function Input({
@@ -40,6 +41,7 @@ function Input({
   disabledClass,
   style,
   label,
+  value,
 }: InputProps) {
   return (
     <div className="flex flex-col gap-2 ">
@@ -49,6 +51,7 @@ function Input({
         </label>
       )}
       <input
+        value={value}
         style={style}
         className={`${styles["input"]} ${disabledClass} ${emptyClass}`}
         name={name}

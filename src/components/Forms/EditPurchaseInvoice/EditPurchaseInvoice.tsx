@@ -99,7 +99,11 @@ function EditPurchaseInvoice({ optionElementProps, setShowModal }: Props) {
     });
 
     serverData.forEach((product: ProductObject) => {
-      updateExistedProduct({ productsData: product, id: product.id });
+      updateExistedProduct({
+        invoiceType: "update",
+        productsData: product,
+        id: product.id,
+      });
     });
 
     updatePurchases({

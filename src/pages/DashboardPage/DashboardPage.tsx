@@ -11,8 +11,9 @@ import {
   HiArrowPath,
   HiArrowUturnLeft,
   HiDocumentMinus,
-  HiExclamationTriangle,
 } from "react-icons/hi2";
+import LocationNav from "../../ui/LocationNav/LocationNav";
+import LocationNavHeading from "../../ui/LocationNavHeading/LocationNavHeading";
 
 function DashboardPage() {
   const location = useLocation();
@@ -72,14 +73,6 @@ function DashboardPage() {
               Returned Goods
             </NavLink>
           </li>
-          <li>
-            <NavLink to="/missing">
-              <span>
-                <HiExclamationTriangle />
-              </span>
-              Missing Goods
-            </NavLink>
-          </li>
         </ul>
         <Link to="/" className={styles["store__links-back"]}>
           <span>
@@ -89,12 +82,13 @@ function DashboardPage() {
         </Link>
       </div>
       <div>
-        <div className={styles["store__location"]}>
-          <h2>{name}</h2>
-          <span>
-            <HiBell />
-          </span>
-        </div>
+        <LocationNav
+          Element={LocationNavHeading}
+          elementProps={{
+            name: name,
+            icon: <HiBell />,
+          }}
+        />
         <Outlet />
       </div>
     </div>

@@ -1,9 +1,25 @@
 import styles from "./ClearInputsData.module.scss";
 
-function ClearInputsData({ optionElementProps, rowId }) {
+interface OptionElementProps {
+  clearInputsDataClick: (rowId: string) => void;
+
+  position: {
+    top: string;
+    right: string;
+  };
+
+  rowId: string;
+}
+
+function ClearInputsData({
+  position,
+  rowId,
+  clearInputsDataClick,
+}: OptionElementProps) {
   return (
     <span
-      onClick={() => optionElementProps(rowId)}
+      style={position}
+      onClick={() => clearInputsDataClick(rowId)}
       className={styles["clear-inputs"]}
     >
       X

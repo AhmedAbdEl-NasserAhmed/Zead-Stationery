@@ -1,4 +1,9 @@
-import { ProductObject } from "./productObject";
+interface ProductObject {
+  id: string;
+  piecesCount: number;
+  piecesPrice: number;
+  totalPrice: number;
+}
 
 export interface InvoiceDataObject {
   id?: string;

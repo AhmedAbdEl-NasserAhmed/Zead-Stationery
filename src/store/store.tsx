@@ -1,4 +1,3 @@
-import sliderSlice from "./slices/sliderSlice";
 import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
 
@@ -11,7 +10,6 @@ import { billsApi } from "../services/billsAPi";
 
 export const store = configureStore({
   reducer: {
-    slider: sliderSlice,
     currentCapital: currentCapitalSlice,
     [goodsApi.reducerPath]: goodsApi.reducer,
     [purchasesApi.reducerPath]: purchasesApi.reducer,

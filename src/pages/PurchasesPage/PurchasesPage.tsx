@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DateBar from "../../components/DateBar/DateBar";
 // import PurchasesInvoice from "../../components/Purchases Invoice/PurchasesInvoice";
 import AddPurchase from "../../features/AddPurchase";
@@ -9,28 +9,49 @@ import { useGetPurchasesDataQuery } from "../../services/purchasesApi";
 import { PurchaseInvoice } from "../../interfaces/purchaseInvoice";
 import Invoice from "../../components/Invoice/Invoice";
 import EditPurchase from "./EditPurchase/EditPurchase";
+import Input from "../../ui/Input/Input";
 
 function PurchasesPage() {
   const { data, isFetching } = useGetPurchasesDataQuery("purchases");
 
   const [date, setDate] = useState<Date>(new Date());
 
-  const filtredData = data?.filter(
-    (invoice: PurchaseInvoice) => invoice.date === date.toDateString()
-  );
+  const [sellerName, setSellerName] = useState<string>("");
+
+  const [filteredData, setFilteredData] = useState([]);
+
+  useEffect(() => {
+    setFilteredData(
+      data?.filter(
+        (invoice: PurchaseInvoice) =>
+          invoice.date === date.toDateString() &&
+          String(invoice.sellerName)
+            .toLowerCase()
+            .includes(String(sellerName).toLowerCase())
+      )
+    );
+  }, [data, sellerName, date]);
 
   return (
     <Container>
       <div className={styles["purchase-page"]}>
         <AddPurchase />
         <DateBar date={date} setDate={setDate} title="Purchases Invoices" />
+        <Input
+          onChange={(e) => setSellerName(e.target.value)}
+          name="sellerName"
+          value={sellerName}
+          style={{ width: `${100}%` }}
+          placeholder="SELLER NAME"
+          type="text"
+        />
         <Menus>
           <Invoice
             falloutMessage="No Purchase Available"
             heading="Seller Name"
             OptionElement={EditPurchase}
             type="purchase"
-            filtredData={filtredData}
+            filteredData={filteredData}
             isFetching={isFetching}
             invoiceDetails={{
               name: "name",

@@ -18,6 +18,8 @@ interface Props {
   invoiceDetails: InvoiceDetails;
   optionElementProps: InvoiceDataObject;
   OptionElement: React.ComponentType<OptionElementProps>;
+  showOptionElementCondition?: string;
+  showOptionMessage?: string;
 }
 
 function InvoiceListItem({
@@ -27,6 +29,8 @@ function InvoiceListItem({
   invoiceDetails,
   OptionElement,
   optionElementProps,
+  showOptionElementCondition,
+  showOptionMessage,
 }: Props) {
   const nameType = type === "purchase" ? "sellerName" : "buyerName";
 
@@ -41,7 +45,12 @@ function InvoiceListItem({
       <div className={styles["invoice-container__product-details"]}>
         <div className=" flex justify-between w-full col-span-full justify-self-start text-2xl">
           <h2>Invoice Products Details :</h2>
-          <OptionElement optionElementProps={optionElementProps} />
+
+          {invoice[showOptionElementCondition]
+            ? showOptionMessage
+            : OptionElement && (
+                <OptionElement optionElementProps={optionElementProps} />
+              )}
         </div>
 
         {invoice?.products?.map((product: ProductObject) => {

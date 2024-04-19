@@ -3,7 +3,7 @@ import { db } from "../firebase/firebase";
 import { ProductObject } from "../interfaces/productObject";
 import { updatedPropertiesFactory } from "../helpers/updatedPropertiesFactory";
 
-async function useUpdateExistedProduct({ productsData, id }) {
+async function useUpdateExistedProduct({ invoiceType, productsData, id }) {
   const indentifier = productsData.existedProductId
     ? productsData.existedProductId
     : id;
@@ -20,7 +20,10 @@ async function useUpdateExistedProduct({ productsData, id }) {
 
   const updatedObjectRef = doc(db, "goods", isAlreadyExisted?.id);
 
+  console.log("productsData", productsData);
+
   const updatedObjectData = updatedPropertiesFactory(
+    invoiceType,
     productsData,
     isAlreadyExisted
   );

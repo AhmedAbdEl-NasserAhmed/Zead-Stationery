@@ -7,6 +7,10 @@ import { useForm } from "react-hook-form";
 import { formatFormData } from "../../../helpers/formatFormData";
 import { formatErrorObject } from "../../../helpers/formatErrorObject";
 import { InvoiceDataObject } from "../../../interfaces/invoiceDataObject";
+import { useUpdateCapitalDataMutation } from "../../../services/capitalApi";
+import { useUseUpdateExistedProductMutation } from "../../../services/goodsApi";
+import { useAppSelector } from "../../../interfaces/hooks";
+import { useUpdateBillInvoiceMutation } from "../../../services/billsAPi";
 
 interface Props {
   setShowModal?: () => void;
@@ -14,6 +18,16 @@ interface Props {
 }
 
 function RefundBillInvoice({ optionElementProps, setShowModal }: Props) {
+  const [updateCapital] = useUpdateCapitalDataMutation();
+
+  const [updateExistedProduct] = useUseUpdateExistedProductMutation();
+
+  const [updateBillInvoice] = useUpdateBillInvoiceMutation();
+
+  // const [updateBillInvoice]=useU
+
+  const { amount } = useAppSelector((state) => state.currentCapital);
+
   const {
     register,
     handleSubmit,
@@ -23,15 +37,47 @@ function RefundBillInvoice({ optionElementProps, setShowModal }: Props) {
 
   const formData = watch();
 
-  console.log("optionElementProps", optionElementProps);
-
   const newFormData = formatFormData(formData, "");
 
   const newFormErros = formatErrorObject(errors, "");
 
+  const totalPrice = optionElementProps.products
+    .slice()
+    .map((product) => product.totalPrice);
+
+  const currentBalanceUpdate = totalPrice.reduce(
+    (acc: number, number: number) => {
+      return acc + number + 0;
+    }
+  );
+
   function onSubmit() {
-    console.log("Hello");
+    optionElementProps.products.forEach((product) => {
+      updateExistedProduct({
+        invoiceType: "refund",
+        productsData: product,
+        id: product.id,
+      });
+    });
+
+    updateBillInvoice({
+      data: {
+        id: optionElementProps.id,
+        isRefunded: true,
+      },
+    });
+
+    updateCapital({
+      data: {
+        id: "1be3a89a-24eb-45c4-a1b5-deaa703bd465",
+        amount: Number(amount - currentBalanceUpdate),
+      },
+    });
+
+    setShowModal();
   }
+
+  // console.log("optionElementProps", optionElementProps);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={styles["refund-bill"]}>
