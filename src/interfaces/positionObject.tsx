@@ -1,7 +1,7 @@
 export interface PositionObject {
-  width: number;
-  right: number;
-  left: number;
+  right: string | number;
+  left: string | number;
+  width: string | number;
 }
 
 export interface SelectedProduct {

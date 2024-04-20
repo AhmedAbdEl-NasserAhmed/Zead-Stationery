@@ -4,7 +4,7 @@ import TableHeader from "./TableHeader/TableHeader";
 import TableRow from "./TableRow/TableRow";
 
 interface Props {
-  title: string;
+  title?: string;
   headers?: (object: ProductObject) => object[];
   data: ProductObject[];
   ExtraElement?: React.FC;

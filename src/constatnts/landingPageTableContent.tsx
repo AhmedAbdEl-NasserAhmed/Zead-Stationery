@@ -1,6 +1,6 @@
 import { ProductObject } from "../interfaces/productObject";
 
-export function goodsTableContent(product: ProductObject) {
+export function landingPageTableContent(product: ProductObject) {
   return [
     { name: " Product Name", serverKey: "name", value: product?.name },
     {
@@ -61,9 +61,6 @@ export function goodsTableContent(product: ProductObject) {
           +product?.["piecesPrice"]) *
           +product?.["piecesCount"]) /
         100,
-    },
-    {
-      name: "Actions",
     },
   ];
 }

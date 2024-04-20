@@ -4,15 +4,22 @@ import LocationNav from "../../ui/LocationNav/LocationNav";
 import LocationLink from "../../ui/Link/LocationLink";
 import { HiBell } from "react-icons/hi";
 import { useState } from "react";
+import Container from "../../ui/Container/Container";
+import AddBill from "../../features/AddBill";
+import LandingPageList from "./LandingPageList/LandingPageList";
+import { PositionObject } from "../../interfaces/positionObject";
+import LandingPageLinkDataFactory from "./LandingPageLinkDataFactory/LandingPageLinkDataFactory";
 
 function LandingPage() {
   const date = currentDate();
 
-  const [position, setPosition] = useState({
-    right: 0,
-    left: 0,
-    width: 20,
+  const [position, setPosition] = useState<PositionObject>({
+    width: `${56.7955}px`,
+    right: `${224.977}px`,
+    left: `${168.182}px`,
   });
+
+  const [currentDatalink, setCurrentDataLink] = useState<string>("");
 
   function handler(e) {
     const id = e.target.id;
@@ -21,43 +28,45 @@ function LandingPage() {
 
     const rec = element.getBoundingClientRect();
 
-    setPosition({ right: rec.right, left: rec.left, width: rec.width });
+    console.log("rec", rec);
+
+    setPosition({
+      right: rec.right,
+      left: rec.left,
+      width: rec.width,
+    });
+  }
+
+  function setCurrentLink(link) {
+    setCurrentDataLink(link);
   }
 
   return (
-    <div>
-      <LocationNav
-        Element={LocationLink}
-        elementProps={{
-          location: "/stock",
-          name: "Go to the Store",
-          icon: <HiBell />,
-        }}
-      />
-      <h2 className="text-5xl">Today: {date}</h2>
-      <ul id="links-container" className=" relative flex justify-between">
-        <li id="link-1" onClick={handler}>
-          goods
-        </li>
-        <li id="link-2" onClick={handler}>
-          bills
-        </li>
-        <li id="link-3" onClick={handler}>
-          missing goods
-        </li>
-        <li id="link-4" onClick={handler}>
-          out goods
-        </li>
-        <span
-          style={{
-            width: position.width,
-            left: position.left,
-            right: position.right,
+    <>
+      <div>
+        <LocationNav
+          Element={LocationLink}
+          elementProps={{
+            location: "/stock",
+            name: "Go to the Store",
+            icon: <HiBell />,
           }}
-          className={styles["slider"]}
-        ></span>
-      </ul>
-    </div>
+        />
+      </div>
+      <Container>
+        <div className={styles["landing-page"]}>
+          <h2 className="text-5xl">Today: {date}</h2>
+          <AddBill />
+          <hr />
+          <LandingPageList
+            setCurrentLink={setCurrentLink}
+            handler={handler}
+            position={position}
+          />
+          <LandingPageLinkDataFactory type={currentDatalink} />
+        </div>
+      </Container>
+    </>
   );
 }
 
