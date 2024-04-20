@@ -9,4 +9,5 @@ export interface InvoiceDataObject {
   id?: string;
   date?: string;
   products?: ProductObject[];
+  isRefunded?: boolean;
 }

@@ -9,6 +9,7 @@ import AddBill from "../../features/AddBill";
 import LandingPageList from "./LandingPageList/LandingPageList";
 import { PositionObject } from "../../interfaces/positionObject";
 import LandingPageLinkDataFactory from "./LandingPageLinkDataFactory/LandingPageLinkDataFactory";
+import CreateReport from "../../components/CreateReport/CreateReport";
 
 function LandingPage() {
   const date = currentDate();
@@ -55,8 +56,15 @@ function LandingPage() {
       </div>
       <Container>
         <div className={styles["landing-page"]}>
-          <h2 className="text-5xl">Today: {date}</h2>
-          <AddBill />
+          <div className="flex justify-between">
+            <div>
+              <h2 className="text-5xl mb-10">Today: {date}</h2>
+              <AddBill />
+            </div>
+            <div>
+              <CreateReport />
+            </div>
+          </div>
           <hr />
           <LandingPageList
             setCurrentLink={setCurrentLink}
