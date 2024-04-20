@@ -1,4 +1,6 @@
 import BillsDataLink from "./BillsDataLink/BillsDataLink";
+import GoodsDataLink from "./GoodsDataLink/GoodsDataLink";
+import ReturnedDataLink from "./ReturnedDataLink/ReturnedDataLink";
 
 interface Props {
   type: string;
@@ -7,16 +9,16 @@ interface Props {
 function LandingPageLinkDataFactory({ type }: Props) {
   switch (type) {
     case "goods": {
-      return <BillsDataLink />;
+      return <GoodsDataLink />;
     }
     case "bills": {
-      return <p>bills</p>;
+      return <BillsDataLink />;
     }
     case "returnedGoods": {
-      return <p>returnedGoods</p>;
+      return <ReturnedDataLink />;
     }
     default:
-      return <BillsDataLink />;
+      return <GoodsDataLink />;
   }
 }
 
