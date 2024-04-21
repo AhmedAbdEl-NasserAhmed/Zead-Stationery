@@ -1,10 +1,18 @@
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../firebase/firebase";
 
-async function useUpdateCapitalHistory({ data }) {
+interface Props {
+  id: string;
+  capital: number;
+  date: string;
+}
+
+async function useUpdateCapitalHistory({ id, capital, date }: Props) {
   try {
-    await setDoc(doc(db, "capitalHistory", data?.id), {
-      ...data,
+    await setDoc(doc(db, "capitalHistory", id), {
+      id,
+      capital,
+      date,
     });
 
     return { data: "ok" };

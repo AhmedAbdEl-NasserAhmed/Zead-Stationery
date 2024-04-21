@@ -12,6 +12,8 @@ interface Props {
 function DeleteConfirmation({ product, setShowModal }: Props) {
   const [deleteProduct, response] = useDeleteProductMutation();
 
+  console.log("response", response);
+
   if (response.isLoading) return <Spinner />;
 
   return (

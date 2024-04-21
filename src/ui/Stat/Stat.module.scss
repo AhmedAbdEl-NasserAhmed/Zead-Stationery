@@ -1,0 +1,22 @@
+.stat {
+  padding: 3rem;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  background-color: var(--color-white);
+
+  & span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 6.5rem;
+    height: 6.5rem;
+    border-radius: 50%;
+  }
+
+  & svg {
+    font-size: 3.5rem;
+  }
+}

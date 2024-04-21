@@ -1,20 +1,26 @@
 import { useForm } from "react-hook-form";
 import styles from "./UpdateCapitalForm.module.scss";
-
 import Input from "../../../ui/Input/Input";
 import Button from "../../../ui/Button/Button";
-import { useUpdateCapitalDataMutation } from "../../../services/capitalApi";
 import { useAppDispatch, useAppSelector } from "../../../interfaces/hooks";
 import { assingAmount } from "../../../store/slices/currentCapitalSlice";
-import { useUpdateCapitalHistoryDataMutation } from "../../../services/capitalHistory";
-import Spinner from "../../../ui/Spinner/Spinner";
 import { useState } from "react";
 
 interface Props {
   setShowModal?: () => void;
+  updateCapital: (data: { id: string; amount: number }) => void;
+  updateCapitalHistory: (data: {
+    id: string;
+    capital: number;
+    date: string;
+  }) => void;
 }
 
-function UpdateCapitalForm({ setShowModal }: Props) {
+function UpdateCapitalForm({
+  updateCapitalHistory,
+  updateCapital,
+  setShowModal,
+}: Props) {
   const {
     register,
     handleSubmit,
@@ -27,10 +33,6 @@ function UpdateCapitalForm({ setShowModal }: Props) {
 
   const formData = watch();
 
-  const [updateCapital, response] = useUpdateCapitalDataMutation();
-
-  const [updateCapitalHistory] = useUpdateCapitalHistoryDataMutation();
-
   const [rowId] = useState<string>(crypto.randomUUID().substring(0, 5));
 
   const { amount } = useAppSelector((state) => state.currentCapital);
@@ -39,18 +41,14 @@ function UpdateCapitalForm({ setShowModal }: Props) {
 
   function onSubmit() {
     updateCapital({
-      data: {
-        id: "1be3a89a-24eb-45c4-a1b5-deaa703bd465",
-        amount: Number(+formData?.[rowId].capital + amount),
-      },
+      id: "1be3a89a-24eb-45c4-a1b5-deaa703bd465",
+      amount: Number(+formData?.[rowId].capital + amount),
     });
 
     updateCapitalHistory({
-      data: {
-        id: crypto.randomUUID(),
-        capital: Number(+formData?.[rowId].capital),
-        date: new Date(Date.now()).toDateString(),
-      },
+      id: crypto.randomUUID(),
+      capital: Number(+formData?.[rowId].capital),
+      date: new Date(Date.now()).toDateString(),
     });
 
     reset();
@@ -59,8 +57,6 @@ function UpdateCapitalForm({ setShowModal }: Props) {
 
     dispatch(assingAmount(Number(formData.capital)));
   }
-
-  if (response.isLoading) return <Spinner />;
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={styles["capital-form"]}>
@@ -91,9 +87,7 @@ function UpdateCapitalForm({ setShowModal }: Props) {
         />
       </div>
       <div className="flex self-start gap-10">
-        <Button disabled={response.isLoading} variation="primary">
-          Update
-        </Button>
+        <Button variation="primary">Update</Button>
         <Button onClick={setShowModal} variation="secondary">
           cancel
         </Button>

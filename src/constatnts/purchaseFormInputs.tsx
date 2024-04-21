@@ -16,6 +16,12 @@ export const purchaseFormInputs = function (
       },
     },
     {
+      name: `${rowId}.product-existedProductId`,
+      type: "text",
+      disabled: true,
+      placeholder: "Existed Product Id",
+    },
+    {
       name: `${rowId}.product-piecesCount`,
       type: "number",
       disabled: false,
@@ -71,12 +77,6 @@ export const purchaseFormInputs = function (
           message: "This field is required",
         },
       },
-    },
-    {
-      name: `${rowId}.product-existedProductId`,
-      type: "text",
-      disabled: true,
-      placeholder: "Existed Product Id",
     },
   ];
 };

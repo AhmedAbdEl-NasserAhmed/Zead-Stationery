@@ -23,7 +23,7 @@ function DashboardPage() {
   return (
     <div className={styles["store"]}>
       <div className={styles["store__links"]}>
-        <h2 className={styles["store__links-heading"]}>Zead Stationery</h2>
+        <h2 className={styles["store__links-heading"]}>Stationery</h2>
         <ul className={styles["store__links-list"]}>
           <li>
             <NavLink to="/stock">

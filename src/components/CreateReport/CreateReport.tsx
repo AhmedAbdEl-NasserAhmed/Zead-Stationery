@@ -34,7 +34,10 @@ function CreateReport() {
 
     return (
       <div className={styles["create-report"]}>
-        <h2 className="text-4xl">{totalPrice} EGP</h2>
+        <h2 className="text-3xl flex flex-col gap-5 items-center">
+          <span> Daily Income </span>
+          <span className="font-bold">{totalPrice} EGP</span>
+        </h2>
       </div>
     );
   }

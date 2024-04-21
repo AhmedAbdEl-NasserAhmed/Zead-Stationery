@@ -2,15 +2,16 @@ import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase/firebase";
 
 interface Props {
-  data: { id: string; amount: number };
+  id: string;
+  amount: number;
 }
 
-async function useUpdateCapital({ data }: Props) {
-  const updatedCapital = doc(db, "capital", data.id);
+async function useUpdateCapital({ id, amount }: Props) {
+  const updatedCapital = doc(db, "capital", id);
 
   try {
     await updateDoc(updatedCapital, {
-      ...data,
+      amount: amount,
     });
     return { data: "ok" };
   } catch (err) {

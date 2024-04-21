@@ -1,12 +1,13 @@
-import LandingPageSlider from "../../../../ui/LandingPageSlider/LandingPageSlider";
-
-function LandingPageItem({ link, position }) {
+function LandingPageItem({ link }) {
   return (
     <>
-      <li id={link.id} onClick={link.onClick} className=" cursor-pointer">
+      <li
+        id={link.id}
+        onClick={link.onClick}
+        className=" relative cursor-pointer"
+      >
         {link.name}
       </li>
-      <LandingPageSlider position={position} />
     </>
   );
 }

@@ -16,11 +16,9 @@ async function useUpdateExistedProduct({ invoiceType, productsData, id }) {
 
   const isAlreadyExisted: ProductObject = docSnap.data();
 
-  if (!isAlreadyExisted || !docRef) return;
+  if (!isAlreadyExisted) return;
 
   const updatedObjectRef = doc(db, "goods", isAlreadyExisted?.id);
-
-  console.log("productsData", productsData);
 
   const updatedObjectData = updatedPropertiesFactory(
     invoiceType,

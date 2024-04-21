@@ -9,6 +9,9 @@ function UpdateCapitalList({ data }) {
     return date2.getTime() - date1.getTime();
   });
 
+  if (!arrangedData.length)
+    return <p className="text-2xl font-semibold">No Updates Yet</p>;
+
   return (
     <ul className={styles["updatedCapitals"]}>
       <h2 className={styles["updatedCapitals__heading"]}>Capital History</h2>

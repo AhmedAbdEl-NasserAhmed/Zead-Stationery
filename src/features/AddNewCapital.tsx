@@ -3,7 +3,7 @@ import Menus from "../ui/Menus/Menus";
 import Modal from "../ui/Modal/Modal";
 import UpdateCapitalForm from "../components/Forms/UpdateCapitalForm/UpdateCapitalForm";
 
-function AddNewCapital() {
+function AddNewCapital({ updateCapitalHistory, updateCapital }) {
   return (
     <div>
       <Modal>
@@ -19,7 +19,10 @@ function AddNewCapital() {
               </Modal.Open>
             </Menus.List>
             <Modal.Window name="update-capital">
-              <UpdateCapitalForm />
+              <UpdateCapitalForm
+                updateCapital={updateCapital}
+                updateCapitalHistory={updateCapitalHistory}
+              />
             </Modal.Window>
           </Menus.Menu>
         </Menus>

@@ -87,6 +87,8 @@ function List({ id, children }) {
 
   if (openId !== id) return null;
 
+  window.addEventListener("scroll", closeMenus);
+
   return createPortal(
     <ul
       ref={ref}

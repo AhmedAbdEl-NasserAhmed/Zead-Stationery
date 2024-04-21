@@ -96,8 +96,6 @@ function AddBillForm({ setShowModal }: Props) {
 
   const inputData = newFormData ? newFormData["product-name"] : undefined;
 
-  console.log("Form Data", formData);
-
   useEffect(() => {
     setFiltredData(
       data?.filter((product: ProductObject) => {
@@ -203,6 +201,8 @@ function AddBillForm({ setShowModal }: Props) {
       });
     });
 
+    console.log("serverData", serverData);
+
     setNewBill({
       id: crypto.randomUUID(),
       products: serverData,
@@ -212,10 +212,8 @@ function AddBillForm({ setShowModal }: Props) {
     });
 
     updateCapital({
-      data: {
-        id: "1be3a89a-24eb-45c4-a1b5-deaa703bd465",
-        amount: Number(currentBalance),
-      },
+      id: "1be3a89a-24eb-45c4-a1b5-deaa703bd465",
+      amount: Number(currentBalance),
     });
 
     dispatch(assingAmount(currentBalance));

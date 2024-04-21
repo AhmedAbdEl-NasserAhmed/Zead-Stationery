@@ -9,6 +9,8 @@ async function useUpdateGoods(productsData: ProductObject) {
 
   const docRef = doc(db, "goods", identifer);
 
+  if (!docRef) return;
+
   const docSnap = await getDoc(docRef);
 
   try {
