@@ -1,10 +1,8 @@
 import { useEffect } from "react";
-
 import styles from "./ExistedItemsData.module.scss";
-import useClickoutSide from "../../../hooks/useClickoutSide";
 
 function ExistedItemsData({
-  closeMenuFc,
+  // closeMenuFc,
   filtredData,
   selectedItem,
   setValue,
@@ -12,37 +10,27 @@ function ExistedItemsData({
   onClickItem,
   setBillProductQuantity,
 }) {
-  const ref = useClickoutSide({
-    closeFc: closeMenuFc,
-    value: false,
-  });
-
   const isFilteredData = filtredData?.length >= 1;
-
-  useEffect(() => {
-    if (filtredData.length === 0) {
-      closeMenuFc(false);
-    }
-  }, [filtredData.length, closeMenuFc]);
 
   useEffect(() => {
     if (setBillProductQuantity) {
       setBillProductQuantity();
     }
 
-    for (const key in settersValue) {
-      setValue(key, settersValue[key]);
-    }
+    if (Object.values(selectedItem)[0] !== "")
+      for (const key in settersValue) {
+        setValue(key, settersValue[key]);
+      }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setValue, selectedItem]);
 
   return (
-    <div className={styles["existed-products"]} ref={ref}>
+    <div className={styles["existed-products"]}>
       {isFilteredData ? (
         <ul>
           {filtredData?.map((item) => {
             return (
-              <li key={item.id} onClick={() => onClickItem(item, closeMenuFc)}>
+              <li key={item.id} onClick={() => onClickItem(item)}>
                 {item.name}
               </li>
             );

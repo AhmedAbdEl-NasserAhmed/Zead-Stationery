@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Input from "../../ui/Input/Input";
 import ExistedItemsData from "./ExistedItemsData/ExistedItemsData";
 import {
@@ -22,7 +21,7 @@ interface OptionElementProps {
 interface Props {
   filtredData: object[];
   label: string;
-  onClick: (closeFc: (open: boolean) => void) => void;
+  onClick: () => void;
   optionElementProps: OptionElementProps;
   OptionElement: React.ComponentType<OptionElementProps>;
   emptyClassName: string;
@@ -35,6 +34,7 @@ interface Props {
   disabled: boolean;
   disabledClass: string;
   placeholder: string;
+  emptyStringCondition: boolean;
 
   setValue: <TFieldValues>(
     name: Path<TFieldValues>,
@@ -45,7 +45,7 @@ interface Props {
   selectedItem: object;
   type: string;
 
-  onClickItem: (item: object, closeFc: (open: boolean) => void) => void;
+  onClickItem: (item: object) => void;
 }
 
 function SmartSearchInput({
@@ -58,7 +58,6 @@ function SmartSearchInput({
   emptyClassName,
   OptionElement,
   register,
-  inputData,
   name,
   newFormErros,
   disabled,
@@ -68,16 +67,14 @@ function SmartSearchInput({
   selectedItem,
   type,
   onClickItem,
+  emptyStringCondition,
 }: Props) {
-  const [showExistedListItems, setShowExistedListItems] =
-    useState<boolean>(false);
-
   return (
     <div className="flex flex-col relative items-center justify-center self-start ">
       <div className="relative">
         <Input
           label={label}
-          onClick={() => onClick(setShowExistedListItems)}
+          onClick={() => onClick}
           type={type}
           style={{ width: `${100}%` }}
           disabled={disabled}
@@ -96,11 +93,10 @@ function SmartSearchInput({
         />
         {disabled && <OptionElement {...optionElementProps} />}
       </div>
-      {showExistedListItems && inputData !== undefined && (
+      {emptyStringCondition && filtredData?.length > 0 && (
         <ExistedItemsData
           setBillProductQuantity={setBillProductQuantity}
           selectedItem={selectedItem}
-          closeMenuFc={setShowExistedListItems}
           filtredData={filtredData}
           settersValue={settersValue}
           setValue={setValue}

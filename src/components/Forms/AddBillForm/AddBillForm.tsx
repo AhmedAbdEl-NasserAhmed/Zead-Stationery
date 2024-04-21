@@ -94,7 +94,9 @@ function AddBillForm({ setShowModal }: Props) {
 
   const newFormErros = formatErrorObject(errors, "buyerName");
 
-  const inputData = newFormData ? newFormData["product-name"] : undefined;
+  const inputData = formData
+    ? formData?.[currentRowId]?.["product-name"]
+    : undefined;
 
   useEffect(() => {
     setFiltredData(
@@ -223,9 +225,9 @@ function AddBillForm({ setShowModal }: Props) {
     setShowModal();
   }
 
-  function smartSearchInputOnClick(rowId: string, closeFc) {
+  function smartSearchInputOnClick(rowId: string) {
     setCurrentRowId(rowId);
-    closeFc(true);
+    // closeFc(true);
   }
 
   function clearInputsDataClick(rowId: string) {
@@ -244,11 +246,10 @@ function AddBillForm({ setShowModal }: Props) {
     setSelectedBillProductQuantity(0);
   }
 
-  function closeSearchMenu(closeFc) {
+  function closeSearchMenu() {
     clearErrors(`${currentRowId}.product-name`);
 
     setTimeout(() => {
-      closeFc(false);
       setSelectedBillProduct({
         name: "",
         type: "",
@@ -256,6 +257,7 @@ function AddBillForm({ setShowModal }: Props) {
         piecesCount: 0,
         singlePrice: 0,
       });
+      setFiltredData([]);
     }, 1);
   }
 
@@ -316,9 +318,8 @@ function AddBillForm({ setShowModal }: Props) {
                     placeholder="Prodcut Name"
                     label="Product Name"
                     name={`${rowId}.product-name`}
-                    onClick={(closeFc) =>
-                      smartSearchInputOnClick(rowId, closeFc)
-                    }
+                    onClick={() => smartSearchInputOnClick(rowId)}
+                    emptyStringCondition={inputData !== ""}
                     emptyClassName={
                       formData?.[rowId]?.["product-name"] === "" ? "empty" : ""
                     }
@@ -334,14 +335,9 @@ function AddBillForm({ setShowModal }: Props) {
                           +selectedBillProduct.singleCount
                       )
                     }
-                    onClickItem={(
-                      item: {
-                        name: string;
-                      },
-                      closeFc
-                    ) => {
+                    onClickItem={(item: { name: string }) => {
                       addRowId();
-                      closeSearchMenu(closeFc);
+                      closeSearchMenu();
                       setSelectedBillProduct(item);
                       setSelectedProducts((data) => [...data, item.name]);
                     }}
@@ -349,18 +345,13 @@ function AddBillForm({ setShowModal }: Props) {
                     settersValue={{
                       [`${currentRowId}.product-name`]:
                         selectedBillProduct.name,
-
                       [`${currentRowId}.id`]: selectedBillProduct.id,
-
                       [`${currentRowId}.soldPieces`]:
                         selectedBillProduct.soldPieces,
-
                       [`${currentRowId}.singleCount`]:
                         selectedBillProduct.singleCount,
-
                       [`${currentRowId}.piecesCount`]:
                         selectedBillProduct.piecesCount,
-
                       [`${currentRowId}.singlePrice`]:
                         selectedBillProduct.singlePrice,
                     }}
@@ -373,7 +364,6 @@ function AddBillForm({ setShowModal }: Props) {
                     selectedItem={selectedBillProduct}
                   />
                 }
-
                 {billFormInputs(
                   rowId,
                   formData,

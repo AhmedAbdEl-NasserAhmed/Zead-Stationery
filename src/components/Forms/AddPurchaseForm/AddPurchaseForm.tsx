@@ -84,7 +84,9 @@ function AddPurchaseForm({ setShowModal }: Props) {
 
   const newFormErros = formatErrorObject(errors, "sellerName");
 
-  const inputData = newFormData ? newFormData["product-name"] : undefined;
+  const inputData = formData
+    ? formData?.[currentRowId]?.["product-name"]
+    : undefined;
 
   useEffect(() => {
     setCurrentRowId(inputRow[inputRow.length - 1]);
@@ -185,8 +187,7 @@ function AddPurchaseForm({ setShowModal }: Props) {
     setInputRow((data) => data.filter((row) => row !== rowID));
   }
 
-  function smartSearchInputOnClick(rowId: string, closeFc) {
-    closeFc(true);
+  function smartSearchInputOnClick(rowId: string) {
     setCurrentRowId(rowId);
   }
 
@@ -198,19 +199,23 @@ function AddPurchaseForm({ setShowModal }: Props) {
     }
   }
 
-  function closeSearchListMenu(setShowExistedListItems) {
+  function closeSearchListMenu() {
     clearErrors(`${currentRowId}.product-type`);
     clearErrors(`${currentRowId}.product-name`);
 
     setTimeout(() => {
       setSelectedProduct({ name: "", type: "" });
-      setShowExistedListItems(false);
+      setFiltredData([]);
     }, 1);
   }
 
   function addRowId() {
     setRowIdsArray((data) => [...data, currentRowId]);
   }
+
+  console.log("Form Data", formData);
+
+  console.log("input Data", inputData);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={styles["purchase-form"]}>
@@ -269,12 +274,11 @@ function AddPurchaseForm({ setShowModal }: Props) {
                     emptyClassName={
                       formData?.[rowId]?.["product-name"] === "" ? "empty" : ""
                     }
-                    onClick={(closeFc) =>
-                      smartSearchInputOnClick(rowId, closeFc)
-                    }
-                    onClickItem={(item, closeFc) => {
+                    emptyStringCondition={inputData !== ""}
+                    onClick={() => smartSearchInputOnClick(rowId)}
+                    onClickItem={(item) => {
                       addRowId();
-                      closeSearchListMenu(closeFc);
+                      closeSearchListMenu();
                       setSelectedProduct(item);
                     }}
                     selectedItem={selectedProduct}

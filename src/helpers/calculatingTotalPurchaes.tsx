@@ -10,8 +10,8 @@ export function calculatingTotalPurchases({ purchases }) {
         for (const key in product) {
           modifiedObject[key] = product[key];
         }
+        purchasesArray.push(modifiedObject);
       }
-      purchasesArray.push(modifiedObject);
     }
   }
 
