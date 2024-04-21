@@ -8,8 +8,6 @@ export function updatedPropertiesFactory(
 ) {
   let updatedProperties: ProductObject = {};
 
-  console.log("invoiceType", invoiceType);
-
   if (InvoiceType.SELL === invoiceType) {
     return (updatedProperties = {
       piecesCount: isAlreadyExisted.piecesCount - productsData.soldPieces,

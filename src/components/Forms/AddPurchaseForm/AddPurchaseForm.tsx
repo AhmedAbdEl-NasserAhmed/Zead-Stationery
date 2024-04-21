@@ -169,10 +169,8 @@ function AddPurchaseForm({ setShowModal }: Props) {
     });
 
     updateCapital({
-      data: {
-        id: "1be3a89a-24eb-45c4-a1b5-deaa703bd465",
-        amount: Number(currentBalance),
-      },
+      id: "1be3a89a-24eb-45c4-a1b5-deaa703bd465",
+      amount: Number(currentBalance),
     });
 
     reset();
