@@ -68,10 +68,8 @@ function RefundBillInvoice({ optionElementProps, setShowModal }: Props) {
     });
 
     updateCapital({
-      data: {
-        id: "1be3a89a-24eb-45c4-a1b5-deaa703bd465",
-        amount: Number(amount - currentBalanceUpdate),
-      },
+      id: "1be3a89a-24eb-45c4-a1b5-deaa703bd465",
+      amount: Number(amount - currentBalanceUpdate),
     });
 
     setShowModal();

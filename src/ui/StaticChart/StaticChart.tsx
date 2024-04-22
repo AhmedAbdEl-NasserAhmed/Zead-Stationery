@@ -29,8 +29,6 @@ function StaticChart() {
     return format(product.date, "MMM dd");
   });
 
-  console.log("totalPurchases", totalPurchases);
-
   const uniqueDates = [...new Set(dates)];
 
   const data = uniqueDates.map((date) => {

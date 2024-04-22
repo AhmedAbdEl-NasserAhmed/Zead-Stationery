@@ -20,13 +20,15 @@ function Stats() {
 
   const { totalPrice } = calculatingTotalPrices({ bills });
 
+  console.log("totalGoods", totalGoods);
+
   if (isLoadingGoods || isLoadingBills) return <Spinner />;
 
   return (
     <div className={styles["stats"]}>
       <div className={styles["stats__data"]}>
         <Stat
-          heading="Total Purchases"
+          heading="Total Goods"
           Details={`${totalGoods} EGP`}
           icon={<FaBoxes />}
           bgColor="#f5f116"
