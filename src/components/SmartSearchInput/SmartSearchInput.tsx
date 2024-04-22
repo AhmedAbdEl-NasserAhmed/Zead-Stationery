@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Input from "../../ui/Input/Input";
 import ExistedItemsData from "./ExistedItemsData/ExistedItemsData";
 import {
@@ -28,7 +29,6 @@ interface Props {
   register: UseFormRegister<FieldValues>;
   setBillProductQuantity?: () => void;
   settersValue: object;
-  inputData: string;
   name: string;
   newFormErros: object;
   disabled: boolean;
@@ -44,8 +44,9 @@ interface Props {
 
   selectedItem: object;
   type: string;
+  inputData?: string;
 
-  onClickItem: (item: object) => void;
+  onClickItem: (item: object, closeFc: () => boolean) => void;
 }
 
 function SmartSearchInput({
@@ -67,8 +68,11 @@ function SmartSearchInput({
   selectedItem,
   type,
   onClickItem,
-  emptyStringCondition,
+  inputData,
 }: Props) {
+  const [showConditionalItem, setShowConditionalItem] =
+    useState<boolean>(false);
+
   return (
     <div className="flex flex-col relative items-center justify-center self-start ">
       <div className="relative">
@@ -83,9 +87,12 @@ function SmartSearchInput({
           emptyClass={emptyClassName}
           register={{
             ...register(name, {
+              onChange: () => {
+                setShowConditionalItem(true);
+              },
               required: {
                 value: true,
-                message: "This field is required",
+                message: "This filed is required",
               },
             }),
           }}
@@ -93,8 +100,11 @@ function SmartSearchInput({
         />
         {disabled && <OptionElement {...optionElementProps} />}
       </div>
-      {emptyStringCondition && filtredData?.length > 0 && (
+      {showConditionalItem && (
         <ExistedItemsData
+          inputData={inputData}
+          closeMenuFc={setShowConditionalItem}
+          setShowConditionalItem={setShowConditionalItem}
           setBillProductQuantity={setBillProductQuantity}
           selectedItem={selectedItem}
           filtredData={filtredData}

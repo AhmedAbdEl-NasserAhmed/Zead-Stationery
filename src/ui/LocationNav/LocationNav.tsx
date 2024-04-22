@@ -14,10 +14,10 @@ interface Props {
 
 function LocationNav({ Element, elementProps, icon }: Props) {
   return (
-    <div className={styles["location-nav"]}>
+    <nav className={styles["location-nav"]}>
       <Element {...elementProps} />
       <span>{icon}</span>
-    </div>
+    </nav>
   );
 }
 

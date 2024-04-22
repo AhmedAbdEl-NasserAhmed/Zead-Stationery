@@ -21,7 +21,7 @@ function DashboardPage() {
   const name = location.pathname.replace("/", "").toUpperCase();
 
   return (
-    <div className={styles["store"]}>
+    <main className={styles["store"]}>
       <div className={styles["store__links"]}>
         <h2 className={styles["store__links-heading"]}>Stationery</h2>
         <ul className={styles["store__links-list"]}>
@@ -91,7 +91,7 @@ function DashboardPage() {
         />
         <Outlet />
       </div>
-    </div>
+    </main>
   );
 }
 

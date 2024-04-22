@@ -246,7 +246,7 @@ function AddBillForm({ setShowModal }: Props) {
     setSelectedBillProductQuantity(0);
   }
 
-  function closeSearchMenu() {
+  function closeSearchMenu(closeFc) {
     clearErrors(`${currentRowId}.product-name`);
 
     setTimeout(() => {
@@ -257,7 +257,7 @@ function AddBillForm({ setShowModal }: Props) {
         piecesCount: 0,
         singlePrice: 0,
       });
-      setFiltredData([]);
+      closeFc(false);
     }, 1);
   }
 
@@ -314,6 +314,7 @@ function AddBillForm({ setShowModal }: Props) {
               <div className={styles["bill-form__input-row"]} key={rowId}>
                 {
                   <SmartSearchInput
+                    inputData={inputData}
                     filtredData={filtredData}
                     placeholder="Prodcut Name"
                     label="Product Name"
@@ -328,16 +329,20 @@ function AddBillForm({ setShowModal }: Props) {
                     disabledClass={"bg-slate-200"}
                     register={register}
                     disabled={rowIdsArray.includes(rowId)}
-                    inputData={inputData}
                     setBillProductQuantity={() =>
                       setSelectedBillProductQuantity(
                         +selectedBillProduct.piecesCount *
                           +selectedBillProduct.singleCount
                       )
                     }
-                    onClickItem={(item: { name: string }) => {
+                    onClickItem={(
+                      item: {
+                        name: string;
+                      },
+                      closeFc
+                    ) => {
                       addRowId();
-                      closeSearchMenu();
+                      closeSearchMenu(closeFc);
                       setSelectedBillProduct(item);
                       setSelectedProducts((data) => [...data, item.name]);
                     }}

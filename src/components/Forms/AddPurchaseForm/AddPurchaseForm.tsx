@@ -88,6 +88,8 @@ function AddPurchaseForm({ setShowModal }: Props) {
     ? formData?.[currentRowId]?.["product-name"]
     : undefined;
 
+  // console.log("Form Data", formData);
+
   useEffect(() => {
     setCurrentRowId(inputRow[inputRow.length - 1]);
   }, [inputRow]);
@@ -137,11 +139,9 @@ function AddPurchaseForm({ setShowModal }: Props) {
         const modiefiedObject = {};
 
         for (const key in product) {
-          if (product[key]) {
-            const newKey = key.split("-");
-            const parts = newKey[1];
-            modiefiedObject[parts] = product[key];
-          }
+          const newKey = key.split("-");
+          const parts = newKey[1];
+          modiefiedObject[parts] = product[key];
         }
 
         const idConditions = product["product-existedProductId"]
@@ -180,8 +180,6 @@ function AddPurchaseForm({ setShowModal }: Props) {
     setShowModal();
   }
 
-  // console.log("formData", formData);
-
   function deleteRow(rowID: string) {
     if (inputRow.length === 1) return;
     setInputRow((data) => data.filter((row) => row !== rowID));
@@ -199,23 +197,19 @@ function AddPurchaseForm({ setShowModal }: Props) {
     }
   }
 
-  function closeSearchListMenu() {
+  function closeSearchListMenu(closeFc) {
     clearErrors(`${currentRowId}.product-type`);
     clearErrors(`${currentRowId}.product-name`);
 
     setTimeout(() => {
       setSelectedProduct({ name: "", type: "" });
-      setFiltredData([]);
+      closeFc(false);
     }, 1);
   }
 
   function addRowId() {
     setRowIdsArray((data) => [...data, currentRowId]);
   }
-
-  console.log("Form Data", formData);
-
-  console.log("input Data", inputData);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={styles["purchase-form"]}>
@@ -267,6 +261,7 @@ function AddPurchaseForm({ setShowModal }: Props) {
               return (
                 <div key={rowId} className={styles["purchase-form__input-row"]}>
                   <SmartSearchInput
+                    inputData={inputData}
                     label=""
                     filtredData={filtredData}
                     name={`${rowId}.product-name`}
@@ -276,13 +271,12 @@ function AddPurchaseForm({ setShowModal }: Props) {
                     }
                     emptyStringCondition={inputData !== ""}
                     onClick={() => smartSearchInputOnClick(rowId)}
-                    onClickItem={(item) => {
+                    onClickItem={(item, closeFc) => {
                       addRowId();
-                      closeSearchListMenu();
+                      closeSearchListMenu(closeFc);
                       setSelectedProduct(item);
                     }}
                     selectedItem={selectedProduct}
-                    inputData={inputData}
                     settersValue={{
                       [`${currentRowId}.product-name`]: selectedProduct.name,
                       [`${currentRowId}.product-type`]: selectedProduct.type,

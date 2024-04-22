@@ -2,15 +2,23 @@ import { useEffect } from "react";
 import styles from "./ExistedItemsData.module.scss";
 
 function ExistedItemsData({
-  // closeMenuFc,
+  inputData,
+  closeMenuFc,
   filtredData,
   selectedItem,
   setValue,
   settersValue,
   onClickItem,
   setBillProductQuantity,
+  setShowConditionalItem,
 }) {
   const isFilteredData = filtredData?.length >= 1;
+
+  useEffect(() => {
+    if (inputData === "") {
+      closeMenuFc();
+    }
+  }, [closeMenuFc, inputData]);
 
   useEffect(() => {
     if (setBillProductQuantity) {
@@ -30,16 +38,19 @@ function ExistedItemsData({
         <ul>
           {filtredData?.map((item) => {
             return (
-              <li key={item.id} onClick={() => onClickItem(item)}>
+              <li
+                key={item.id}
+                onClick={() => {
+                  onClickItem(item, setShowConditionalItem);
+                }}
+              >
                 {item.name}
               </li>
             );
           })}
         </ul>
       ) : (
-        <div className="flex items-center justify-center h-full  ">
-          <p>No Products to display</p>
-        </div>
+        closeMenuFc()
       )}
     </div>
   );
