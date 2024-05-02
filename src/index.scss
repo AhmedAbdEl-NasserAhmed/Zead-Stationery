@@ -61,3 +61,7 @@ html {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-purple-20);
 }
+
+.disabled {
+  visibility: hidden;
+}

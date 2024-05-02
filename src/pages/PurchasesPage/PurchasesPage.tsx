@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import DateBar from "../../components/DateBar/DateBar";
-// import PurchasesInvoice from "../../components/Purchases Invoice/PurchasesInvoice";
 import AddPurchase from "../../features/AddPurchase";
 import Container from "../../ui/Container/Container";
 import styles from "./PurchasesPage.module.scss";
@@ -10,6 +9,8 @@ import { PurchaseInvoice } from "../../interfaces/purchaseInvoice";
 import Invoice from "../../components/Invoice/Invoice";
 import EditPurchase from "./EditPurchase/EditPurchase";
 import Input from "../../ui/Input/Input";
+import Pagination from "../../ui/Pagination/Pagination";
+import { RESULT_PER_PAGE } from "../../constatnts/resultsPerPage";
 
 function PurchasesPage() {
   const { data, isFetching } = useGetPurchasesDataQuery("purchases");
@@ -20,17 +21,51 @@ function PurchasesPage() {
 
   const [filteredData, setFilteredData] = useState([]);
 
+  const [currentPage, setCurrentPage] = useState<number>(1);
+
+  const [numPages, setNumPages] = useState<number>();
+
   useEffect(() => {
+    const currentIndex = (currentPage - 1) * RESULT_PER_PAGE;
+
+    const endPage = RESULT_PER_PAGE * currentPage;
+
     setFilteredData(
-      data?.filter(
-        (invoice: PurchaseInvoice) =>
-          invoice.date === date.toDateString() &&
-          String(invoice.sellerName)
-            .toLowerCase()
-            .includes(String(sellerName).toLowerCase())
+      data
+        ?.filter(
+          (invoice: PurchaseInvoice) =>
+            invoice.date === date.toDateString() &&
+            String(invoice.sellerName)
+              .toLowerCase()
+              .includes(String(sellerName).toLowerCase())
+        )
+        .slice(currentIndex, endPage)
+    );
+
+    if (sellerName !== "") {
+      setFilteredData(
+        data?.filter(
+          (invoice: PurchaseInvoice) =>
+            invoice.date === date.toDateString() &&
+            String(invoice.sellerName)
+              .toLowerCase()
+              .includes(String(sellerName).toLowerCase())
+        )
+      );
+    }
+
+    setNumPages(
+      Math.ceil(
+        data?.filter(
+          (invoice: PurchaseInvoice) =>
+            invoice.date === date.toDateString() &&
+            String(invoice.sellerName)
+              .toLowerCase()
+              .includes(String(sellerName).toLowerCase())
+        ).length / RESULT_PER_PAGE
       )
     );
-  }, [data, sellerName, date]);
+  }, [data, sellerName, date, currentPage]);
 
   return (
     <Container>
@@ -68,6 +103,20 @@ function PurchasesPage() {
           />
         </Menus>
       </div>
+      {!!filteredData?.length &&
+        data?.filter(
+          (invoice: PurchaseInvoice) =>
+            invoice.date === date.toDateString() &&
+            String(invoice.sellerName)
+              .toLowerCase()
+              .includes(String(sellerName).toLowerCase())
+        )?.length > RESULT_PER_PAGE && (
+          <Pagination
+            numPages={numPages}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
+        )}
     </Container>
   );
 }

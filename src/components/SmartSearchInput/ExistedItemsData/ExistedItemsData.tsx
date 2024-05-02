@@ -32,26 +32,24 @@ function ExistedItemsData({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setValue, selectedItem]);
 
+  if (!isFilteredData) return;
+
   return (
     <div className={styles["existed-products"]}>
-      {isFilteredData ? (
-        <ul>
-          {filtredData?.map((item) => {
-            return (
-              <li
-                key={item.id}
-                onClick={() => {
-                  onClickItem(item, setShowConditionalItem);
-                }}
-              >
-                {item.name}
-              </li>
-            );
-          })}
-        </ul>
-      ) : (
-        closeMenuFc()
-      )}
+      <ul>
+        {filtredData?.map((item) => {
+          return (
+            <li
+              key={item.id}
+              onClick={() => {
+                onClickItem(item, setShowConditionalItem);
+              }}
+            >
+              {item.name}
+            </li>
+          );
+        })}
+      </ul>
     </div>
   );
 }

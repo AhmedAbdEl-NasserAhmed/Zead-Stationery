@@ -16,9 +16,9 @@ function LandingPage() {
   const date = currentDate();
 
   const [position, setPosition] = useState<PositionObject>({
-    width: `${56.7955}px`,
-    right: `${224.977}px`,
-    left: `${168.182}px`,
+    width: 0,
+    right: 0,
+    left: 0,
   });
 
   const [currentDatalink, setCurrentDataLink] = useState<string>("");

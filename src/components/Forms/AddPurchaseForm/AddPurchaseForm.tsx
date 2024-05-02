@@ -139,9 +139,11 @@ function AddPurchaseForm({ setShowModal }: Props) {
         const modiefiedObject = {};
 
         for (const key in product) {
-          const newKey = key.split("-");
-          const parts = newKey[1];
-          modiefiedObject[parts] = product[key];
+          if (product[key]) {
+            const newKey = key.split("-");
+            const parts = newKey[1];
+            modiefiedObject[parts] = product[key];
+          }
         }
 
         const idConditions = product["product-existedProductId"]

@@ -1,0 +1,15 @@
+.pagination-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 2rem 0;
+
+  button {
+    display: inline-block;
+    background-color: var(--color-purple-20);
+    color: white;
+    padding: 0.5rem 1.5rem;
+    border-radius: 3px;
+    font-size: 2rem;
+    cursor: pointer;
+  }
+}
