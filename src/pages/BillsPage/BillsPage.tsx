@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import DateBar from "../../components/DateBar/DateBar";
 import AddBill from "../../features/AddBill";
 import Container from "../../ui/Container/Container";
@@ -8,6 +8,8 @@ import Invoice from "../../components/Invoice/Invoice";
 import { useGetBillslDataQuery } from "../../services/billsAPi";
 import RefundBill from "./RefundBill/RefundBill";
 import Input from "../../ui/Input/Input";
+import PaginationNumbers from "../../ui/PaginationNumbers/PaginationNumbers";
+import usePaginationNumbers from "../../hooks/usePaginationNumbers";
 
 function BillsPage() {
   const [date, setDate] = useState<Date>(new Date());
@@ -18,18 +20,9 @@ function BillsPage() {
 
   const { data, isFetching } = useGetBillslDataQuery("bills");
 
-  useEffect(() => {
-    setFilteredData(
-      data?.filter(
-        (invoice) =>
-          invoice.date === date.toDateString() &&
-          !invoice.isRefunded &&
-          String(invoice.buyerName)
-            .toLowerCase()
-            .includes(String(buyerName).toLowerCase())
-      )
-    );
-  }, [data, buyerName, date]);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+
+  usePaginationNumbers({ data, buyerName, date, setFilteredData, currentPage });
 
   return (
     <Container>
@@ -67,6 +60,12 @@ function BillsPage() {
           />
         </Menus>
       </div>
+      <PaginationNumbers
+        currentPage={currentPage}
+        date={date}
+        data={data}
+        setCurrentPage={setCurrentPage}
+      />
     </Container>
   );
 }

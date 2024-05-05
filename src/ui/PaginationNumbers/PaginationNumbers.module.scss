@@ -1,0 +1,21 @@
+.pagination-numbers {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-block: 2rem;
+
+  li {
+    cursor: pointer;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 2rem;
+    aspect-ratio: 1 / 1;
+    transition: all 0.5s;
+    background-color: var(--color-purple-10);
+    color: var(--color-white);
+    box-shadow: 0rem 0.2rem 0rem rgb(0, 0, 2, 0.2);
+  }
+}
