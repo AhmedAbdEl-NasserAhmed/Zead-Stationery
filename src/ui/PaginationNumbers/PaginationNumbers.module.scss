@@ -19,3 +19,13 @@
     box-shadow: 0rem 0.2rem 0rem rgb(0, 0, 2, 0.2);
   }
 }
+
+.pagination-button {
+  display: inline-block;
+  background-color: var(--color-purple-20);
+  color: white;
+  padding: 0.5rem;
+  border-radius: 3px;
+  font-size: 1.5rem;
+  cursor: pointer;
+}

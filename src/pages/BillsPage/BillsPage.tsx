@@ -10,6 +10,7 @@ import RefundBill from "./RefundBill/RefundBill";
 import Input from "../../ui/Input/Input";
 import PaginationNumbers from "../../ui/PaginationNumbers/PaginationNumbers";
 import usePaginationNumbers from "../../hooks/usePaginationNumbers";
+import { RESULT_PER_PAGE } from "../../constatnts/resultsPerPage";
 
 function BillsPage() {
   const [date, setDate] = useState<Date>(new Date());
@@ -23,6 +24,15 @@ function BillsPage() {
   const [currentPage, setCurrentPage] = useState<number>(1);
 
   usePaginationNumbers({ data, buyerName, date, setFilteredData, currentPage });
+
+  const isData =
+    data?.filter(
+      (invoice) =>
+        invoice.date === date.toDateString() &&
+        String(invoice.buyerName)
+          .toLowerCase()
+          .includes(String(buyerName).toLowerCase())
+    )?.length > RESULT_PER_PAGE;
 
   return (
     <Container>
@@ -60,12 +70,14 @@ function BillsPage() {
           />
         </Menus>
       </div>
-      <PaginationNumbers
-        currentPage={currentPage}
-        date={date}
-        data={data}
-        setCurrentPage={setCurrentPage}
-      />
+      {isData && (
+        <PaginationNumbers
+          currentPage={currentPage}
+          date={date}
+          data={data}
+          setCurrentPage={setCurrentPage}
+        />
+      )}
     </Container>
   );
 }
